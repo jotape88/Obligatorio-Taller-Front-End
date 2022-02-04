@@ -9,7 +9,7 @@ const Footer = () => {
 
                         </figure>
                 </a>
-                <footer>
+                <footer className='py-2 ps-5'>
                     <p>2022 - Juan Pablo Gil - Taller Front End</p>
                 </footer>
             </> 
