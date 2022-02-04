@@ -1,0 +1,43 @@
+*{margin: 0; padding: 0;} /* Reseteo del css */
+html{
+    scroll-behavior: smooth;
+}
+
+/* HEADER */
+header{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    font-size: 1.5rem;
+    letter-spacing: 5px;
+    color: rgb(255, 255, 255);
+    height: 160px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3), 0px -4px 10px rgba(255,255,255,0.2);  /* Extraido de:  https://www.codesdope.com/blog/article/25-creative-css3-text-shadow-effects-you-cant-miss/*/ 
+    background: linear-gradient(159.17deg, #022461 -9.41%, #455c9a 97.45%);; /*Generado en https://cssgradient.io/ */
+    box-shadow: 2px 2px 12px rgb(119, 119, 119);
+}
+
+h1:nth-of-type(1){
+    align-self: center;
+}
+
+/* ANCLA VOLVER */
+#anclaVolver {
+    position: fixed; right: 25px; bottom: 45px;
+}
+
+/* FOOTER */
+footer{
+    position: fixed;
+    color: rgb(95, 94, 94);
+    height: 30px;
+    text-align: center;
+    background-color: rgba(105, 105, 105, 0.103);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 0;
+    padding-top: 4px;
+    border-top: 1px solid rgba(180, 179, 179, 0.308);
+}
+
