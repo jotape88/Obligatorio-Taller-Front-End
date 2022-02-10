@@ -17,21 +17,21 @@ h1:nth-of-type(1){
 }
 
 /* FORMULARIO */
-input[type="password"], input[type="text"] { /* las cajas de texto */
-    color: rgb(0, 2, 7); /* el color del texto que se escribe*/
+input[type="password"], input[type="text"] { 
+    color: rgb(17, 43, 109); 
     border: 2px solid rgb(4, 4, 90);
     padding-left: 15px;
 }
 
-input[type="password"]:hover, input[type="text"]:hover { /* las cajas de texto */
+input[type="password"]:hover, input[type="text"]:hover { 
     background-color: rgba(10, 7, 211, 0.096);
 }
 
-input[type="password"]::placeholder, input[type="text"]::placeholder { /* los placeholder */
+input[type="password"]::placeholder, input[type="text"]::placeholder { 
     color: rgb(4, 26, 148);
 }
 
-input[type="submit"] {  /* El boton enviar */
+input[type="submit"] {  
     background-color: rgba(2, 6, 29, 0.562);
     color: white;
     border: 1px solid black;
@@ -40,7 +40,7 @@ input[type="submit"] {  /* El boton enviar */
     height: 30px;
 }
 
-input[type="submit"]:hover {  /* El hover de enviar */
+input[type="submit"]:hover {  
     background-color: rgb(70, 69, 71);
 }
 
