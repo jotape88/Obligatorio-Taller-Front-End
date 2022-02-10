@@ -1,8 +1,7 @@
-import React from 'react'
-import Imagen from '../img/go-up.png'
+import Imagen from '../../img/go-up.png'
 
 const Footer = () => {
-    return  <>
+    return  <div className='footer text-start'>
                 <a href="#miHeader">
                         <figure id="anclaVolver">
                             <img alt="flechaVovler" title="Flecha para volver al inicio" src={Imagen}></img>
@@ -12,7 +11,7 @@ const Footer = () => {
                 <footer className='py-2 ps-5'>
                     <p>2022 - Juan Pablo Gil - Taller Front End</p>
                 </footer>
-            </> 
+            </div> 
 }
 
 export default Footer;

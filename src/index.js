@@ -7,14 +7,15 @@ import './styles/estilos.css';
 
 import reportWebVitals from './reportWebVitals';
 import App from './App';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <Header />
+
     <App />
-    <Footer />
+    
   </React.StrictMode>,
   document.getElementById('root')
 );
