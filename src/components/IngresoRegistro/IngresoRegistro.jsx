@@ -1,30 +1,27 @@
 import React, { useRef, useState } from 'react'
+import { Alert, Button, Form } from "react-bootstrap";
 
+//#region ( Components )
 const IngresoRegistro = () => {
 
+    //#region [Hooks]
     const refInputUsuario = useRef();
     const refInputContrasenia = useRef();
+    const [mensajes, setMensajes] = useState('');
+    //#endregion
 
-    const handlerIngreso = async () => { //Como debemos esperar a que el servidor nos responda, es una funcion asincrona
-        const elUsuario = refInputUsuario.current.value;
-        const laContrasenia = refInputContrasenia.current.value;
-      
-        const validarDatos = (nom, pass) =>{
-            return nom.length !== 0 || pass.length !== 0;
-        }
+    //#region [Metodos, Validaciones]
+    const validarDatos = (nom, pass) =>{
+        return nom.length !== 0 || pass.length !== 0;            
+    }
+    //#endregion
 
-        if (validarDatos(elUsuario, laContrasenia)){
-            console.log('Login correcto');
-        } else {
-            console.log('Los valores no pueden estar en blanco')
-        }
-    
-        //#region [llamado a la API]
+    //#region [Llamadas a la API]
+    const llamadaAPI = (usuario, laContrasenia, tipoLlamado) => {
+        let laUrl = `https://envios.develotion.com/${tipoLlamado}`;  
         // Dividimos el llamado a la api en varios componentes
-        let laUrl = "https://envios.develotion.com/login.php";
-
         let objeto = {
-            usuario: elUsuario,
+            usuario: usuario,
             password: laContrasenia
         };
         
@@ -41,44 +38,91 @@ const IngresoRegistro = () => {
             redirect: 'follow'
         };
         
-        const laRespuesta = await fetch(`${laUrl}`, requestOptions)
+        return fetch(`${laUrl}`, requestOptions)
                                 .then((response) => response.json())
-                                .then((result) => console.log(result))
+                                .then((result) => result)
                                 .catch((error) => {console.log(error);
                                 });
-        
-        console.log(laRespuesta);
+    }
+    //#endregion
 
-        const elResultado = await laRespuesta.json();     
-        
-        if(elResultado.apiKey) {
-            console.log('Ingreso correcto', elResultado.apiKey);
+    //#region [Handlers]
+    const handlerIngreso = async (e) => { //Como tenemos que esperar a que el servidor nos responda, es una funcion asincrona
+        const elUsuario = refInputUsuario.current.value;
+        const laContrasenia = refInputContrasenia.current.value;
+     
+        e.preventDefault(); //Para evitar que no se recargue la pagina
+
+        if (validarDatos(elUsuario, laContrasenia)){
+            console.log('Login correcto');
+            let res = await llamadaAPI(elUsuario, laContrasenia, 'login.php');
+            console.log(res);
+            //TODO seguir aca
+
+             if (res.codigo === 200){
+                let persona = {
+                    nombre: elUsuario,
+                    apiKey: res.apiKey
+                }
+                sessionStorage.setItem('usuario', JSON.stringify(persona)); //Guardamos el usuario en el localStorage en version JSON stringify
+             } else{
+                setMensajes(res.mensaje);
+             }
+            
         } else {
-            console.log('Ingreso incorrecto');
+            setMensajes('Debe ingresar un usuario y una contraseña.');
+        }
+    }
+
+    const handlerRegistro = async (e) => {
+        const elUsuario = refInputUsuario.current.value;
+        const laContrasenia = refInputContrasenia.current.value;
+
+        e.preventDefault();
+
+        if (validarDatos(elUsuario, laContrasenia)){
+            let res = await llamadaAPI(elUsuario, laContrasenia, 'usuarios.php');
+            console.log(res);
+            //TODO seguir aca
+            
+            if (res.codigo === 200){
+                setMensajes(`El usuario "${elUsuario}" fue registrado correctamente con la id: "${res.id}"`);
+             } else{
+                setMensajes(res.mensaje);
+             }
+
+        } else {
+            setMensajes('Debe ingresar un usuario y una contraseña.');
         }
 
-        //#endregion 
     }
+    //#endregion
 
-    const handlerRegistro = async () => {
-        return true;
-    }
-
-
+    //#region [Renderizado]
 return (
-    <div className='formularioRegistro row justify-content-center'>
+     <div className='formularioRegistro row justify-content-center'>
 
-        <form className='col-10 col-sm-8 col-md-6 col-lg-4 col-xl-3 p-5 text-center pt-5 mt-5 justify-content-center' >
-          <input ref={refInputUsuario}    className='py-1 w-100 mb-2 text rounded mb-3' type='text' placeholder='Usuario'  />
-          <input ref={refInputContrasenia}   className='py-1 w-100 mb-2 text rounded' type='password' placeholder='Contraseña'  />
-          <input onClick={handlerIngreso}    className='rounded me-2 mt-3' type='submit' value='Ingresar' />
-          <input onClick={handlerRegistro}    className='rounded ms-2 mt-3' type='submit' value='Registrarse' />
-        </form>
+        <Form  className='col-10 col-sm-8 col-md-6 col-lg-4 col-xl-3 mt-5'>
 
-    </div>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Control required  ref={refInputUsuario} type="text" placeholder="Usuario" />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Control required  ref={refInputContrasenia} type="password" placeholder="Contraseña" />
+          </Form.Group>
+     
+          <input  onClick={handlerIngreso}   className='rounded me-2 mt-3' type='submit' value='Ingresar' />
+          <input  onClick={handlerRegistro}  className='rounded ms-2 mt-3' type='submit' value='Registrarse' />
+          
+        </Form>
+
+        {mensajes && <Alert className='col-10 mt-5 rounded' variant="warning">{mensajes}</Alert>} 
+
+     </div>
   )
-
+  //#endregion
 }
-
+//#endregion
 
 export default IngresoRegistro;

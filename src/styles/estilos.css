@@ -28,7 +28,7 @@ input[type="password"]:hover, input[type="text"]:hover {
 }
 
 input[type="password"]::placeholder, input[type="text"]::placeholder { 
-    color: rgb(4, 26, 148);
+    color: rgb(165, 171, 204);
 }
 
 input[type="submit"] {  

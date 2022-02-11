@@ -5,7 +5,7 @@ const Contenido = () => {
   return (
     <main className='container-fluid'>
       
-      <IngresoRegistro></IngresoRegistro>
+      {/* <IngresoRegistro></IngresoRegistro> */}
 
 
     </main>
