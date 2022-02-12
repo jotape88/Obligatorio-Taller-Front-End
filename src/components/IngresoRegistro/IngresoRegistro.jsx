@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { Alert, Button, Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 
 //#region ( Components )
 const IngresoRegistro = () => {
@@ -8,6 +9,7 @@ const IngresoRegistro = () => {
     const refInputUsuario = useRef();
     const refInputContrasenia = useRef();
     const [mensajes, setMensajes] = useState('');
+    const dispatch = useDispatch();
     //#endregion
 
     //#region [Metodos, Validaciones]
