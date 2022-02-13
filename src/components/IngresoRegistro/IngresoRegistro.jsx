@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Alert, Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import { useNavigate  } from 'react-router-dom';
 
 //#region ( Components )
 const IngresoRegistro = () => {
@@ -10,6 +11,9 @@ const IngresoRegistro = () => {
     const refInputContrasenia = useRef();
     const [mensajes, setMensajes] = useState('');
     const dispatch = useDispatch();
+
+    // let navigate = useNavigate();
+
     //#endregion
 
     //#region [Metodos, Validaciones]
@@ -59,14 +63,18 @@ const IngresoRegistro = () => {
             console.log('Login correcto');
             let res = await llamadaAPI(elUsuario, laContrasenia, 'login.php');
             console.log(res);
-            //TODO seguir aca
 
              if (res.codigo === 200){
                 let persona = {
+                    idUsuario: res.id,
                     nombre: elUsuario,
                     apiKey: res.apiKey
                 }
+
                 sessionStorage.setItem('usuario', JSON.stringify(persona)); //Guardamos el usuario en el localStorage en version JSON stringify
+                dispatch({ type: 'Ingreso', payload: persona }); //Guardamos el usuario en el store
+                // navigate('/IngresoRegistro/IngresoRegistro');
+
              } else{
                 setMensajes(res.mensaje);
              }
