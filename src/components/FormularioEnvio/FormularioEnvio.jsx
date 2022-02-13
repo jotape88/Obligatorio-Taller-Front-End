@@ -20,7 +20,6 @@ const FormularioEnvio = () => {
     const pesoPaqueteRef = useRef();
 
     let usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
-    let apiKey = usuarioLogueado.apiKey;
 
     
     //#region Metodos

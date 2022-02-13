@@ -108,3 +108,9 @@ footer{
 #log-out a:hover{
     background-color: rgb(49,75,137) /* Green */
 }
+
+#cargando{
+    color:#02215a;
+    font-size: 2.5rem;
+    font-weight: 700;
+}

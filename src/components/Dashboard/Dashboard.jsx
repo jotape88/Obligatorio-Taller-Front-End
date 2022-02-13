@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import FormularioEnvio from '../FormularioEnvio/FormularioEnvio';
 import { useDispatch, useSelector } from "react-redux";
+import Imagen from '../../img/loading.gif'
 
 const Dashboard = () => {
   console.log(`Se renderiza la dashboard`)
   //const usuarioLogeado = useSelector((state) => state.reducerIngresoRegistro); //Obtenemos el usuario desde el reducer
   let usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
+
+  const [banderaDeptos, setBanderaDeptos] = useState('');
 
   const dispatch = useDispatch();
 
@@ -16,7 +19,7 @@ const Dashboard = () => {
   //TODO faltan los envios del usuario
 
   //#region Llamadas a API
-  const cargarDptosAPI = () => {
+  const cargarDptosAPI = async () => {
     let myHeaders = new Headers();
     myHeaders.append("apikey", usuarioLogeado.apiKey);
     myHeaders.append("Content-Type", "application/json");
@@ -25,9 +28,9 @@ const Dashboard = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    return  fetch("https://envios.develotion.com/departamentos.php", requestOptions)
+    return await fetch("https://envios.develotion.com/departamentos.php", requestOptions)
                  .then((response) => response.json())
-                 .then((result) => console.log(result.departamentos))
+                 .then((result) => result)
                  .catch((error) => console.log('error', error));
     // console.log(`Lo que tiene la variable res:`, res);
     // return res;
@@ -84,20 +87,24 @@ const Dashboard = () => {
   // // };
   // //#endregion
 
-  const cargarAlDispatch = () => {
+
+
+
+  const cargarAlDispatch = async () => {
     console.log(`Se ejecuta el dispatch`)
     // let envios =  obtenerEnviosAPI(1);
     // let categorias =  obtenerCategoriasAPI();
-    let departamentos = cargarDptosAPI();
+    let departamentos = await cargarDptosAPI();
+    console.log(`Los departamentos son:`, departamentos.departamentos);
     // let ciudades =  cargarCiudadesAPI(1);
 
     // let enviosParse = JSON.parse(envios);
     // let categoriasParse = JSON.parse(categorias).categorias;
-    // let departamentosParse =  JSON.parse(departamentos).departamentos;
+    // let departamentosParse =  JSON.parse(departamentos)[0].departamentos;
     // let ciudadesParse = JSON.parse(ciudades);
 
 
-    console.log(`Los departamenos son: ${departamentos}`)
+    // console.log(`Los departamenos parseados son: ${departamentosParse}`)
     // console.log(categorias)
     // console.log(categorias)
     // console.log(departamentosParse)
@@ -107,26 +114,37 @@ const Dashboard = () => {
     dispatch( {type: 'CargarDepartamentos', payload: departamentos} );
   }
 
+    useEffect(() => {
+       const datosCargados = async() =>{ 
+          await cargarAlDispatch(); 
+          setBanderaDeptos(true);
+        }
+        datosCargados();
+    }, []);
+
     // useEffect(() => {
-      cargarAlDispatch();
-      // }, []);
+    //   //fetch the data --> Works well
+    //   async function datosCargados() {
+    //     const data = await cargarAlDispatch();
+    //   // Add the Data to the Spicearray --> Works  
+    //   setBanderaDeptos(true)
+    //   }
+    // }, [banderaDeptos]);
 
-
-
-  
-
+  //#region Renderizado
   return (
       <>
-              <div id="user-info">
-                  <p>Usuario:</p>
-                  <p>{usuarioLogeado.nombre}</p>
-              </div>
-              <div id="log-out">
-                  <a href="/Login">Logout</a>
-              </div>
-          <FormularioEnvio></FormularioEnvio>
+          <div id="user-info">
+              <p>Usuario:</p>
+              <p>{usuarioLogeado.nombre}</p>
+          </div>
+          <div id="log-out">
+              <a href="/Login">Logout</a>
+          </div>
+          { banderaDeptos ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  } 
       </>
   )
+  //#endregion
 }
 
 export default Dashboard
