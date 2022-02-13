@@ -28,6 +28,12 @@ input[type="password"], input[type="text"], .select, .input {
     padding-left: 15px;
 }
 
+input[type="password"], input[type="text"]{
+    transition: all 0.4s;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+
+
 input[type="password"]:hover, input[type="text"]:hover { 
     background-color: rgba(10, 7, 211, 0.096);
 }
@@ -36,15 +42,16 @@ input[type="password"]::placeholder, input[type="text"]::placeholder {
     color: rgb(165, 171, 204);
 }
 
-input[type="submit"] {  
+input[type="submit"] {   /*Boton de agregar envio*/
     background-color: rgba(2, 6, 29, 0.562);
     color: white;
     border: 1px solid black;
     box-shadow: 1px 1px 12px rgb(119, 119, 119);
     width: 34%;
     height: 30px;
+    transition: all 0.4s;
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
 }
-
 input[type="submit"]:hover {  
     background-color: rgb(70, 69, 71);
 }
@@ -104,6 +111,7 @@ footer{
     text-decoration: none;
     border-radius: 50px;
     box-shadow: 5px 4px 10px rgba(12, 1, 1, 0.3);
+    transition: all 0.8s;
 }
 #log-out a:hover{
     background-color: rgb(49,75,137) /* Green */

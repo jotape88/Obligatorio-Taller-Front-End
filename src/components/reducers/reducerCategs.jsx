@@ -2,16 +2,14 @@ import React from 'react'
 
 const estadoInicial = '';
 
-const reducerDptos = (state = estadoInicial, action) => {
-    // console.log(`Lo que viene del payload`, action.payload)
+const reducerCategs = (state = estadoInicial, action) => {
     switch (action.type) {
-        case 'CargarDepartamentos':
+        case 'CargarCategorias':
             return [...state, action.payload];
             // return estadoADevolver;
         default:
             return state;
     }
+}
 
-};
-
-export default reducerDptos;
+export default reducerCategs

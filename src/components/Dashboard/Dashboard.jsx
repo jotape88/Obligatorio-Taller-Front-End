@@ -9,7 +9,7 @@ const Dashboard = () => {
   //const usuarioLogeado = useSelector((state) => state.reducerIngresoRegistro); //Obtenemos el usuario desde el reducer
   let usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
 
-  const [banderaDeptos, setBanderaDeptos] = useState('');
+  const [banderaLlamadasAPI, setBanderaLlamadasAPI] = useState();
 
   const dispatch = useDispatch();
 
@@ -52,6 +52,20 @@ const Dashboard = () => {
   //                .catch(error => console.log('error', error));
   // };
 
+  const obtenerCategoriasAPI = async () => {
+    let myHeaders = new Headers();
+    myHeaders.append("apikey", usuarioLogeado.apiKey);
+    myHeaders.append("Content-Type", "application/json");
+    let requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+    return await fetch("https://envios.develotion.com/categorias.php", requestOptions)
+                 .then(response => response.json())
+                 .then(result => result)
+                 .catch(error => console.log('error', error));
+  };
 
   // const obtenerEnviosAPI = async (idUsuario) => {
   //   let myHeaders = new Headers();
@@ -68,34 +82,18 @@ const Dashboard = () => {
   //                .catch(error => console.log('error', error));
   // };
 
-
-  // // const obtenerCategoriasAPI = async () => {
-  // //   let myHeaders = new Headers();
-  // //   myHeaders.append("apikey", usuarioLogeado.apiKey);
-  // //   myHeaders.append("Content-Type", "application/json");
-
-  // //   let requestOptions = {
-  // //     method: 'GET',
-  // //     headers: myHeaders,
-  // //     redirect: 'follow'
-  // //   };
-
-  // //   return await fetch("https://envios.develotion.com/categorias.php", requestOptions)
-  // //                .then(response => response.text())
-  // //                .then(result => result)
-  // //                .catch(error => console.log('error', error));
-  // // };
-  // //#endregion
+  //#endregion
 
 
 
 
   const cargarAlDispatch = async () => {
     console.log(`Se ejecuta el dispatch`)
-    // let envios =  obtenerEnviosAPI(1);
-    // let categorias =  obtenerCategoriasAPI();
+    let categorias = await obtenerCategoriasAPI();
     let departamentos = await cargarDptosAPI();
-    console.log(`Los departamentos son:`, departamentos.departamentos);
+    // console.log(`Los departamentos son:`, departamentos.departamentos);
+    console.log(`Las categorias son:`, categorias.categorias);
+    // let envios =  obtenerEnviosAPI(1);
     // let ciudades =  cargarCiudadesAPI(1);
 
     // let enviosParse = JSON.parse(envios);
@@ -110,14 +108,14 @@ const Dashboard = () => {
     // console.log(departamentosParse)
     //console.log(departamentos)
     // // dispatch({type: 'CargarEnvios', payload: enviosParse});
-    // // dispatch({type: 'CargarCategorias', payload: categoriasParse});
+    dispatch( {type: 'CargarCategorias', payload: categorias} );
     dispatch( {type: 'CargarDepartamentos', payload: departamentos} );
   }
 
     useEffect(() => {
        const datosCargados = async() =>{ 
           await cargarAlDispatch(); 
-          setBanderaDeptos(true);
+          setBanderaLlamadasAPI(true);
         }
         datosCargados();
     }, []);
@@ -141,7 +139,7 @@ const Dashboard = () => {
           <div id="log-out">
               <a href="/Login">Logout</a>
           </div>
-          { banderaDeptos ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  } 
+          { banderaLlamadasAPI ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  } 
       </>
   )
   //#endregion
