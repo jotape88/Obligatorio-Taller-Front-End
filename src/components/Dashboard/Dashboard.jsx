@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = () => {
   console.log(`Se renderiza la dashboard`)
-  const usuarioLogeado = useSelector((state) => state.reducerIngresoRegistro); //Obtenemos el usuario desde el reducer
+  //const usuarioLogeado = useSelector((state) => state.reducerIngresoRegistro); //Obtenemos el usuario desde el reducer
+  let usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
+
   const dispatch = useDispatch();
 
   // // let usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
@@ -114,10 +116,16 @@ const Dashboard = () => {
   
 
   return (
-
-    <div>
-        <FormularioEnvio></FormularioEnvio>
-    </div>
+      <>
+              <div id="user-info">
+                  <p>Usuario:</p>
+                  <p>{usuarioLogeado.nombre}</p>
+              </div>
+              <div id="log-out">
+                  <a href="/Login">Logout</a>
+              </div>
+          <FormularioEnvio></FormularioEnvio>
+      </>
   )
 }
 

@@ -2,17 +2,18 @@ import React, { useRef, useState } from 'react'
 import { Alert, Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate  } from 'react-router-dom';
+// import {NavLink} from 'react-router-dom';
 
 //#region ( Components )
 const IngresoRegistro = () => {
+    sessionStorage.clear(); //Limpiamos los datos de sesion cada vez que redirigimos al login
 
     //#region [Hooks]
     const refInputUsuario = useRef();
     const refInputContrasenia = useRef();
     const [mensajes, setMensajes] = useState('');
     const dispatch = useDispatch();
-
-    // let navigate = useNavigate();
+    const navigate = useNavigate();
 
     //#endregion
 
@@ -69,12 +70,10 @@ const IngresoRegistro = () => {
                     idUsuario: res.id,
                     nombre: elUsuario,
                     apiKey: res.apiKey
-                }
-
+                } 
                 sessionStorage.setItem('usuario', JSON.stringify(persona)); //Guardamos el usuario en el localStorage en version JSON stringify
                 dispatch({ type: 'Ingreso', payload: persona }); //Guardamos el usuario en el store
-                // navigate('/IngresoRegistro/IngresoRegistro');
-
+                navigate('/Dashboard');
              } else{
                 setMensajes(res.mensaje);
              }

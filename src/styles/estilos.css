@@ -67,3 +67,44 @@ footer{
     border-top: 1px solid rgba(180, 179, 179, 0.308);
 }
 
+/* NOMBRE DE USER */
+#user-info{
+    position: relative;
+    text-align: end;
+    right: 50px;
+    top: -140px; 
+}
+#user-info p {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color:white;
+    margin: 0;
+    text-shadow: 1px 1px 1px rgb(240, 240, 240);
+
+}
+#user-info p:nth-of-type(2) {
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    font-style: italic;
+}
+
+/* DESLOGUEO */
+#log-out{
+    position: relative;
+    text-align: end;
+    right: 50px;
+    top: -115px; 
+}
+
+#log-out a{
+    background-color: rgb(80, 99, 148); /* Green */
+    border: none;
+    color: white;
+    padding: 5px 30px;
+    text-decoration: none;
+    border-radius: 50px;
+    box-shadow: 5px 4px 10px rgba(12, 1, 1, 0.3);
+}
+#log-out a:hover{
+    background-color: rgb(49,75,137) /* Green */
+}

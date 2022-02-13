@@ -10,13 +10,22 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import  reducer from './components/reducers/reducer';
 
+const store = createStore(reducer);
 
 ReactDOM.render(
+  
   <React.StrictMode>
 
-    <App />
-    
+    <Provider store={store}>
+      <Header/>
+      <App />
+      </Provider>
+    <Footer/>
+
   </React.StrictMode>,
   document.getElementById('root')
 );
