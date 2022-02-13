@@ -92,10 +92,9 @@ const Dashboard = () => {
     let categorias = await obtenerCategoriasAPI();
     let departamentos = await cargarDptosAPI();
     // console.log(`Los departamentos son:`, departamentos.departamentos);
-    console.log(`Las categorias son:`, categorias.categorias);
+    // console.log(`Las categorias son:`, categorias.categorias);
     // let envios =  obtenerEnviosAPI(1);
     // let ciudades =  cargarCiudadesAPI(1);
-
     // let enviosParse = JSON.parse(envios);
     // let categoriasParse = JSON.parse(categorias).categorias;
     // let departamentosParse =  JSON.parse(departamentos)[0].departamentos;
