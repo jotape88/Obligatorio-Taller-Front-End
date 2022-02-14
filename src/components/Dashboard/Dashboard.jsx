@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import FormularioEnvio from '../FormularioEnvio/FormularioEnvio';
 import { useDispatch, useSelector } from "react-redux";
 import Imagen from '../../img/loading.gif'
+import FormularioEnvio from '../FormularioEnvio/FormularioEnvio';
+import ListaEnvios from '../ListaEnvios/ListaEnvios';
+
 
 const Dashboard = () => {
   console.log(`Se renderiza la dashboard`)
@@ -138,7 +140,10 @@ const Dashboard = () => {
           <div id="log-out">
               <a href="/Login">Logout</a>
           </div>
-          { banderaLlamadasAPI ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  } 
+          { banderaLlamadasAPI ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  }
+          { banderaLlamadasAPI ? <ListaEnvios /> :  ""} 
+
+
       </>
   )
   //#endregion

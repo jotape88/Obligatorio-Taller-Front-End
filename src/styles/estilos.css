@@ -42,17 +42,16 @@ input[type="password"]::placeholder, input[type="text"]::placeholder {
     color: rgb(165, 171, 204);
 }
 
-input[type="submit"] {   /*Boton de agregar envio*/
+input[type="submit"], #btnAgregarEnvio {   /*Boton de agregar envio*/
     background-color: rgba(2, 6, 29, 0.562);
     color: white;
     border: 1px solid black;
     box-shadow: 1px 1px 12px rgb(119, 119, 119);
     width: 34%;
-    height: 30px;
     transition: all 0.4s;
     text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
 }
-input[type="submit"]:hover {  
+#btnAgregarEnvio:hover {  
     background-color: rgb(70, 69, 71);
 }
 

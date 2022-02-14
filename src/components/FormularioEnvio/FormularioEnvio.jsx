@@ -14,8 +14,8 @@ const FormularioEnvio = () => {
 
     const reduceCiudadesOrigen = useSelector((state) => state.reducerCdsOrig);
     const reduceCiudadesDestino = useSelector((state) => state.reducerCdsDes);
-    console.log(`Las ciudades origen desde el redux:`, reduceCiudadesOrigen);
-    console.log(`Las ciudades destino desde el redux:`, reduceCiudadesDestino);
+    //console.log(`Las ciudades origen desde el redux:`, reduceCiudadesOrigen);
+    //console.log(`Las ciudades destino desde el redux:`, reduceCiudadesDestino);
 
     // let ciudadesOrigenTemp = ""
     // let ciudadesDestinoTemp = ""
@@ -57,10 +57,10 @@ const FormularioEnvio = () => {
     const dispatch = useDispatch();
 
     //const envios = useSelector((state) => state.paquetesReducer);
-    const ciudadOrigenRef = useRef();
-    const ciudadDestinoRef = useRef();
-    const catPaqueteRef = useRef();
-    const pesoPaqueteRef = useRef();
+    const ciudadOrigenRef = useRef(null);
+    const ciudadDestinoRef = useRef(null);
+    const catPaqueteRef = useRef(null);
+    const pesoPaqueteRef = useRef(null);
 
     let usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
 
@@ -77,16 +77,15 @@ const FormularioEnvio = () => {
 
     const traerCiudadXId = (idCiudad) => {
         let ciudad = null;
+        // console.log(`Las ciudades de origen son:`, reduceCiudadesOrigen);
+        // console.log(`Las ciudades de destino son:`, reduceCiudadesDestino);
 
-        console.log(`Las ciudades de origen son:`, reduceCiudadesOrigen);
-        console.log(`Las ciudades de destino son:`, reduceCiudadesDestino);
-
-        if(reduceCiudadesOrigen.ciudades.find(c => c.id == idCiudad)) {
-            ciudad = reduceCiudadesOrigen.ciudades.find(c => c.id == idCiudad);
+        if(reduceCiudadesOrigen.ciudades.find(c => c.id === parseInt(idCiudad))) {
+            ciudad = reduceCiudadesOrigen.ciudades.find(c => c.id === parseInt(idCiudad));
             return ciudad;
         }
-        if(reduceCiudadesDestino.ciudades.find(c => c.id == idCiudad)) {
-            ciudad = reduceCiudadesDestino.ciudades.find(c => c.id == idCiudad);
+        if(reduceCiudadesDestino.ciudades.find(c => c.id === parseInt(idCiudad))) {
+            ciudad = reduceCiudadesDestino.ciudades.find(c => c.id === parseInt(idCiudad));
             return ciudad;
         }
         return ciudad;
@@ -102,52 +101,68 @@ const FormularioEnvio = () => {
         // console.log(e.current.value)
 
         //Valores ingresados por el usuario
-        let codigoCiudadOrigen = ciudadOrigenRef.current.value;
-        let codigoCiudadDestino = ciudadDestinoRef.current.value;
-        let ciudadOrigen = traerCiudadXId(codigoCiudadOrigen);
-        let ciudadDestino = traerCiudadXId(codigoCiudadDestino);
+        // codigoCiudadOrigen = ciudadOrigenRef.current.value ? 
+        // codigoCiudadDestino = ciudadDestinoRef.current.value;
+        // catPaquete = catPaqueteRef.current.value;
+        // pesoPaquete = pesoPaqueteRef.current.value;
 
-        let catPaquete = catPaqueteRef.current.value;
-        let pesoPaquete = pesoPaqueteRef.current.value;
+        
+        
+
+        //#region [Validaciones]
+        //1era parte - Validar que los departamentos hayan sido seleccionados y que la categoria y el peso no esten vacios
+        if(ciudadOrigenRef.current == null || ciudadDestinoRef.current == null || catPaqueteRef.current.value === '' || pesoPaqueteRef.current.value === ''){
+            setMensajes('Todos los campos son obligatorios');
+            return;
+        }
+        //2da parte - Validar que se hayan seleccionado ciudades de origen y destino aun cuando los departamentos si esten seleccionados
+        if(ciudadOrigenRef.current.value === '' || ciudadDestinoRef.current.value === ''){
+            setMensajes('Las ciudades son obligatorias');
+            return;
+        }
+        //#endregion
+
+        const ciudadOrigenObjeto = traerCiudadXId(ciudadOrigenRef.current.value); //A traves del id de la ciudad que obtenemos del useRef, se obtiene el objeto completo
+        const ciudadDestinoObjeto = traerCiudadXId(ciudadDestinoRef.current.value);
 
         //Valores calculados
-        let distancia = getDistance(
-            { latitude: ciudadOrigen.latitud, longitude: ciudadOrigen.longitud },
-            { latitude: ciudadDestino.latitud, longitude: ciudadDestino.longitud });
-        let distanciaEnKms = (distancia / 1000).toFixed(2); //Guardamos la distancia solo hasta dos decimales
+        const distancia = getDistance(
+            { latitude: ciudadOrigenObjeto.latitud, longitude: ciudadOrigenObjeto.longitud },
+            { latitude: ciudadDestinoObjeto.latitud, longitude: ciudadDestinoObjeto.longitud });
+        const distanciaEnKms = (distancia / 1000).toFixed(2); //Guardamos la distancia solo hasta dos decimales
 
-        let precioTotal = calcularPrecioEnvio(pesoPaquete, distanciaEnKms);
+        const precioTotal = calcularPrecioEnvio(pesoPaqueteRef.current.value, distanciaEnKms);
 
-        let objeto = {
+        const objeto = {
             idUsuario: usuarioLogueado.idUsuario,
-            idCiudadOrigen: ciudadOrigen,
-            idCiudadDestino: ciudadDestino,
-            peso: pesoPaquete,
+            idCiudadOrigen: ciudadOrigenRef.current.value,
+            idCiudadDestino: ciudadDestinoRef.current.value,
+            peso: pesoPaqueteRef.current.value,
             distancia: distanciaEnKms,
             precio: precioTotal,
-            idCategoria: catPaquete,            
+            idCategoria: catPaqueteRef.current.value,            
         };
 
-        let myHeaders = new Headers();
+        const myHeaders = new Headers();
 
         myHeaders.append("apikey", usuarioLogueado.apiKey);
         myHeaders.append("Content-Type", "application/json");
 
-        let cuerpoPost = JSON.stringify(objeto);
+        const cuerpoPost = JSON.stringify(objeto);
 
-        let requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: cuerpoPost,
-            redirect: 'follow'
+        const requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              body: cuerpoPost,
+              redirect: 'follow'
         };
 
-        let laUrl = `https://envios.develotion.com/envios.php?idUsuario=${usuarioLogueado.idUsuario}`;
+        const laUrl = `https://envios.develotion.com/envios.php?idUsuario=${usuarioLogueado.idUsuario}`;
 
         fetch(`${laUrl}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
-                if (result.codigo !== 200) {
+                if (result.codigo !== 200) { //Si el codigo es diferente a 200, es porque hubo un error en la llamada, y lo mostramos en pantalla
                     setMensajes(`Error: ${result.mensaje}`);
                 } else {
                     setMensajes(`Envío del usuario: "${usuarioLogueado.nombre}" agendado con éxito, 
@@ -163,10 +178,10 @@ const FormularioEnvio = () => {
     //#region API Ciudades
     const cargarCiudadesAPI = async (idDpto) => {
     // console.log(`Se llama a la api de ciudades con la ID: ${idDpto}`);
-    let myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("apikey", usuarioLogueado.apiKey);
     myHeaders.append("Content-Type", "application/json");
-    let requestOptions = {
+    const requestOptions = {
       method: 'GET',
       headers: myHeaders,
       redirect: 'follow'
@@ -213,24 +228,24 @@ const FormularioEnvio = () => {
   return (
       console.log('Se renderiza el formulario envio'),
 
-    <div className='row justify-content-center mt-4'>
+    <div className='row justify-content-center mb-5'>
         <h2>Agregar un envío</h2>
 
         <Form className='col-10 col-md-6 col-lg-4 mt-4'>
             <Form.Group >
 
-                <Form.Select onChange={handleChangeSelectOrigen} className="select mb-2" defaultValue="titulo" >
-                    <option value="titulo" disabled={true}>Departamento de origen</option>   
+                <Form.Select onChange={handleChangeSelectOrigen} className="select mb-2" defaultValue="" required={true}  >
+                    <option required={true} value="" disabled={true}>Departamento de origen</option>   
                     {departamentos.map((dptoO) => (
-                        <option key={dptoO.id} value={dptoO.id}> {dptoO.nombre} </option>
+                        <option required={true}  key={dptoO.id} value={dptoO.id}> {dptoO.nombre} </option>
                     ))} 
                 </Form.Select>
 
                     {/* Ciudades de acuerdo al dpto */}
                     { banderaCiudadesOrigen ?                
-                    <Form.Select ref={ciudadOrigenRef} className="select mb-4 w-50 mb-5" defaultValue="titulo" >
-                        <option value="titulo" disabled={true}>Ciudad de origen</option>
-                        console.log(reduceCiudadesOrigen)   
+                    <Form.Select ref={ciudadOrigenRef} className="select mb-4 w-50 mb-5" defaultValue="" >
+                        <option value="" disabled={true}>Ciudad de origen</option>
+                        {/* console.log(reduceCiudadesOrigen)    */}
                         {reduceCiudadesOrigen.ciudades.map((ciuO) => (
                             <option key={ciuO.id} value={ciuO.id}> {ciuO.nombre} </option>
                         ))}
@@ -240,8 +255,8 @@ const FormularioEnvio = () => {
 
 
 
-                <Form.Select onChange={handleChangeSelectDestino} className="select mb-2" defaultValue="titulo" >
-                    <option  value="titulo" disabled={true}>Departamento de destino</option>   
+                <Form.Select onChange={handleChangeSelectDestino} className="select mb-2" defaultValue="" >
+                    <option  value="" disabled={true}>Departamento de destino</option>   
                     {departamentos.map((dptoO) => (
                         <option key={dptoO.id} value={dptoO.id}> {dptoO.nombre} </option>
                     ))} 
@@ -249,8 +264,8 @@ const FormularioEnvio = () => {
 
                     {/* Ciudades de acuerdo al dpto */}
                     { banderaCiudadesDestino ?                
-                    <Form.Select ref={ciudadDestinoRef} className="select mb-4 w-50 mb-5" defaultValue="titulo" >
-                        <option value="titulo" disabled={true}>Ciudad de destino</option>   
+                    <Form.Select ref={ciudadDestinoRef} className="select mb-4 w-50 mb-5" defaultValue="" >
+                        <option value="" disabled={true}>Ciudad de destino</option>   
                         {reduceCiudadesDestino.ciudades.map((ciuD) => (
                             <option key={ciuD.id} value={ciuD.id}> {ciuD.nombre} </option>
                         ))}
@@ -258,18 +273,20 @@ const FormularioEnvio = () => {
                     : ""}
 
 
-                <Form.Select ref={catPaqueteRef} className="select mb-4" defaultValue="titulo" > 
-                <option value="titulo" disabled={true}>Categoría del paquete</option> 
+                <Form.Select ref={catPaqueteRef} className="select mb-4" defaultValue="" > 
+                <option value="" disabled={true}>Categoría del paquete</option> 
                     {categorias.map((categs) => (
                         <option key={categs.id} value={categs.id}> {categs.nombre} </option>
                     ))}      
                 </Form.Select>
 
-                <Form.Control ref={pesoPaqueteRef}  className="input" type="number" min="0" step=".1" placeholder="Peso del paquete (en Kg.)" />
+                <Form.Control required ref={pesoPaqueteRef}  className="input" type="number" min="0" step=".1" placeholder="Peso del paquete (en Kg.)" />
                 
             </Form.Group>
 
-            <input onClick={handlerEnvio} className='rounded me-2 mt-3' type='submit' value='Agregar envío' />
+            <Button onClick={handlerEnvio} className='rounded mt-4 py-1' id="btnAgregarEnvio" type="submit">
+                Agregar envío
+            </Button>
         </Form>
 
         {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 
