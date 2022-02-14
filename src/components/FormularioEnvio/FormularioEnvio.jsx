@@ -1,34 +1,40 @@
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDistance } from 'geolib'; //Libreria para calcular la distancia entre dos puntos
+import getDistance from 'geolib/es/getDistance'; //Libreria para calcular la distancia entre dos puntos
 import Imagen from '../../img/loading.gif'
 
 
 const FormularioEnvio = () => {
-    console.log(`Se renderiza el componente FomrularioEnvio`)
+    // console.log(`Se renderiza el componente FomrularioEnvio`)
     //#region datos del reduce
     const reduceDptos = useSelector((state) => state.reducerDptos);
     const departamentos = reduceDptos[0].departamentos;
     // console.log(`Los departamentos recibidos por reduce son: `, departamentos);
 
-    let reduceCiudadesOrigen = useSelector((state) => state.reducerCiudades);
-    let reduceCiudadesDestino = useSelector((state) => state.reducerCiudades);
-    // console.log(`Las ciduades como llegan:`, reduceCiudadesOrigen);
+    const reduceCiudadesOrigen = useSelector((state) => state.reducerCdsOrig);
+    const reduceCiudadesDestino = useSelector((state) => state.reducerCdsDes);
+    console.log(`Las ciudades origen desde el redux:`, reduceCiudadesOrigen);
+    console.log(`Las ciudades destino desde el redux:`, reduceCiudadesDestino);
 
+    // let ciudadesOrigenTemp = ""
+    // let ciudadesDestinoTemp = ""
 
-    if(reduceCiudadesOrigen){
-        if(reduceCiudadesOrigen.Corresp === "ORIGEN"){
-            reduceCiudadesOrigen = reduceCiudadesOrigen.payload[0].ciudades;
-        console.log("Las ciudades de origen son:", reduceCiudadesOrigen)
-        }
-    }
-    if(reduceCiudadesDestino){
-        if(reduceCiudadesDestino.Corresp === "DESTINO"){
-            reduceCiudadesDestino = reduceCiudadesDestino.payload[0].ciudades;
-        // console.log("Las ciudades de destino son:", ciudadesDestino)
-        }
-    }
+    // if(reduceCiudadesOrigen){
+    //     if(reduceCiudadesOrigen.Corresp === "ORIGEN"){
+    //         reduceCiudadesOrigen = reduceCiudadesOrigen.payload[0].ciudades;
+
+    //         dispatch( {type: 'CargarCiudades', payload: ciudades, corresponde: "ORIGEN"} );
+
+    //     console.log("Las ciudades de origen son:", reduceCiudadesOrigen)
+    //     }
+    // }
+    // if(reduceCiudadesDestino){
+    //     if(reduceCiudadesDestino.Corresp === "DESTINO"){
+    //         reduceCiudadesDestino = reduceCiudadesDestino.payload[0].ciudades;
+    //     // console.log("Las ciudades de destino son:", ciudadesDestino)
+    //     }
+    // }
 
 
 
@@ -69,37 +75,62 @@ const FormularioEnvio = () => {
     }
     //#endregion
 
+    const traerCiudadXId = (idCiudad) => {
+        let ciudad = null;
+
+        console.log(`Las ciudades de origen son:`, reduceCiudadesOrigen);
+        console.log(`Las ciudades de destino son:`, reduceCiudadesDestino);
+
+        if(reduceCiudadesOrigen.ciudades.find(c => c.id == idCiudad)) {
+            ciudad = reduceCiudadesOrigen.ciudades.find(c => c.id == idCiudad);
+            return ciudad;
+        }
+        if(reduceCiudadesDestino.ciudades.find(c => c.id == idCiudad)) {
+            ciudad = reduceCiudadesDestino.ciudades.find(c => c.id == idCiudad);
+            return ciudad;
+        }
+        return ciudad;
+    }
+
     const handlerEnvio = async (e) => {
         e.preventDefault();
 
+        // if (e.current.value == undefined) {
+        //     setMensajes('Todos los campos son obligatorios');
+        //     return;
+        // }
+        // console.log(e.current.value)
+
         //Valores ingresados por el usuario
-        let ciudadOrigen = ciudadOrigenRef.current.value;
-        let ciudadDestino = ciudadDestinoRef.current.value;
+        let codigoCiudadOrigen = ciudadOrigenRef.current.value;
+        let codigoCiudadDestino = ciudadDestinoRef.current.value;
+        let ciudadOrigen = traerCiudadXId(codigoCiudadOrigen);
+        let ciudadDestino = traerCiudadXId(codigoCiudadDestino);
+
         let catPaquete = catPaqueteRef.current.value;
         let pesoPaquete = pesoPaqueteRef.current.value;
 
-        if (ciudadOrigen.length === 0 || ciudadDestino.length === 0 || catPaquete.length === 0 || pesoPaquete.length === 0) {
-            setMensajes('Todos los campos son obligatorios');
-            return;
-        }
-
         //Valores calculados
-        let distancia = getDistance(ciudadOrigen, ciudadDestino, 1);
-        let precioTotal = calcularPrecioEnvio(pesoPaquete, distancia);
+        let distancia = getDistance(
+            { latitude: ciudadOrigen.latitud, longitude: ciudadOrigen.longitud },
+            { latitude: ciudadDestino.latitud, longitude: ciudadDestino.longitud });
+        let distanciaEnKms = (distancia / 1000).toFixed(2); //Guardamos la distancia solo hasta dos decimales
+
+        let precioTotal = calcularPrecioEnvio(pesoPaquete, distanciaEnKms);
 
         let objeto = {
             idUsuario: usuarioLogueado.idUsuario,
             idCiudadOrigen: ciudadOrigen,
             idCiudadDestino: ciudadDestino,
             peso: pesoPaquete,
-            distancia: distancia,
+            distancia: distanciaEnKms,
             precio: precioTotal,
-            idCategoria: catPaquete,
-            
+            idCategoria: catPaquete,            
         };
 
         let myHeaders = new Headers();
 
+        myHeaders.append("apikey", usuarioLogueado.apiKey);
         myHeaders.append("Content-Type", "application/json");
 
         let cuerpoPost = JSON.stringify(objeto);
@@ -111,27 +142,27 @@ const FormularioEnvio = () => {
             redirect: 'follow'
         };
 
-        let laUrl = `https://envios.develotion.com/envios.php?idUsuario${usuarioLogueado.id}`;
+        let laUrl = `https://envios.develotion.com/envios.php?idUsuario=${usuarioLogueado.idUsuario}`;
 
         fetch(`${laUrl}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
-                if (result.error) {
-                    setMensajes(result.error);
+                if (result.codigo !== 200) {
+                    setMensajes(`Error: ${result.mensaje}`);
                 } else {
-                    setMensajes('Envio realizado con exito');
-                    dispatch({ type: 'ENVIOS', payload: result });
+                    setMensajes(`Envío del usuario: "${usuarioLogueado.nombre}" agendado con éxito, 
+                                 Monto total: $${precioTotal}, 
+                                 Identificador de envío: ${result.idEnvio}`,);
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.log(`Error del catch ${error}`)
             });
-    
     }
 
     //#region API Ciudades
     const cargarCiudadesAPI = async (idDpto) => {
-    console.log(`Se llama a la api de ciudades con la ID: ${idDpto}`);
+    // console.log(`Se llama a la api de ciudades con la ID: ${idDpto}`);
     let myHeaders = new Headers();
     myHeaders.append("apikey", usuarioLogueado.apiKey);
     myHeaders.append("Content-Type", "application/json");
@@ -151,17 +182,14 @@ const FormularioEnvio = () => {
         setBanderaCiudadesOrigen(false);
         let idDptoOrigen = e.target.value;
         let ciudades = await cargarCiudadesAPI(idDptoOrigen);
-        console.log(ciudades);
-        dispatch( {type: 'CargarCiudades', payload: ciudades, corresponde: "ORIGEN"} );
+        dispatch( {type: 'CargarCiudadesOrigen', payload: ciudades} );
         setBanderaCiudadesOrigen(true);
     }
-
     const handleChangeSelectDestino = async (e) => {
         setBanderaCiudadesDestino(false);
-        let idDptoOrigen = e.target.value;
-        let ciudades = await cargarCiudadesAPI(idDptoOrigen);
-        console.log(ciudades);
-        dispatch( {type: 'CargarCiudades', payload: ciudades, corresponde: "DESTINO"} );
+        let idDptoDestino = e.target.value;
+        let ciudades = await cargarCiudadesAPI(idDptoDestino);
+        dispatch( {type: 'CargarCiudadesDestino', payload: ciudades} );
         setBanderaCiudadesDestino(true);
     }
     
@@ -185,13 +213,13 @@ const FormularioEnvio = () => {
   return (
       console.log('Se renderiza el formulario envio'),
 
-    <div className='row justify-content-center mt-5'>
+    <div className='row justify-content-center mt-4'>
         <h2>Agregar un envío</h2>
 
         <Form className='col-10 col-md-6 col-lg-4 mt-4'>
             <Form.Group >
 
-                <Form.Select onChange={handleChangeSelectOrigen} ref={ciudadOrigenRef} className="select mb-2" defaultValue="titulo" >
+                <Form.Select onChange={handleChangeSelectOrigen} className="select mb-2" defaultValue="titulo" >
                     <option value="titulo" disabled={true}>Departamento de origen</option>   
                     {departamentos.map((dptoO) => (
                         <option key={dptoO.id} value={dptoO.id}> {dptoO.nombre} </option>
@@ -200,9 +228,10 @@ const FormularioEnvio = () => {
 
                     {/* Ciudades de acuerdo al dpto */}
                     { banderaCiudadesOrigen ?                
-                    <Form.Select className="select mb-4 w-50 mb-5" defaultValue="titulo" >
-                        <option value="titulo" disabled={true}>Ciudad de origen</option>   
-                        {reduceCiudadesOrigen.map((ciuO) => (
+                    <Form.Select ref={ciudadOrigenRef} className="select mb-4 w-50 mb-5" defaultValue="titulo" >
+                        <option value="titulo" disabled={true}>Ciudad de origen</option>
+                        console.log(reduceCiudadesOrigen)   
+                        {reduceCiudadesOrigen.ciudades.map((ciuO) => (
                             <option key={ciuO.id} value={ciuO.id}> {ciuO.nombre} </option>
                         ))}
                     </Form.Select>
@@ -211,8 +240,8 @@ const FormularioEnvio = () => {
 
 
 
-                <Form.Select onChange={handleChangeSelectDestino} ref={ciudadDestinoRef} className="select mb-2" defaultValue="titulo" >
-                    <option value="titulo" disabled={true}>Departamento de destino</option>   
+                <Form.Select onChange={handleChangeSelectDestino} className="select mb-2" defaultValue="titulo" >
+                    <option  value="titulo" disabled={true}>Departamento de destino</option>   
                     {departamentos.map((dptoO) => (
                         <option key={dptoO.id} value={dptoO.id}> {dptoO.nombre} </option>
                     ))} 
@@ -220,9 +249,9 @@ const FormularioEnvio = () => {
 
                     {/* Ciudades de acuerdo al dpto */}
                     { banderaCiudadesDestino ?                
-                    <Form.Select className="select mb-4 w-50 mb-5" defaultValue="titulo" >
+                    <Form.Select ref={ciudadDestinoRef} className="select mb-4 w-50 mb-5" defaultValue="titulo" >
                         <option value="titulo" disabled={true}>Ciudad de destino</option>   
-                        {reduceCiudadesDestino.map((ciuD) => (
+                        {reduceCiudadesDestino.ciudades.map((ciuD) => (
                             <option key={ciuD.id} value={ciuD.id}> {ciuD.nombre} </option>
                         ))}
                     </Form.Select>
@@ -240,13 +269,14 @@ const FormularioEnvio = () => {
                 
             </Form.Group>
 
-            <input className='rounded me-2 mt-3' type='submit' value='Agregar envío' />
+            <input onClick={handlerEnvio} className='rounded me-2 mt-3' type='submit' value='Agregar envío' />
         </Form>
+
+        {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 
+
     </div>
 
   )
 }
-
-//onClick={"AGREGAR ENVIO DESPUES MODIFICAR ESO"} 
 
 export default FormularioEnvio

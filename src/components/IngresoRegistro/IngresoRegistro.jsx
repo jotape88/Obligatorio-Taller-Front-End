@@ -126,7 +126,7 @@ return (
           
         </Form>
 
-        {mensajes && <Alert className='col-10 mt-5 rounded' variant="warning">{mensajes}</Alert>} 
+        {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 
 
      </div>
   )
