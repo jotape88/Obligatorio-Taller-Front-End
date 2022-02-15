@@ -1,0 +1,6 @@
+
+-se puede entrar por url a la dashboard
+-punto 3.1 - en las categorias hay imagenes que vienen desde la api
+-arreglar con un try catch cuando te deslogueas, que no explote el codigo si estamos en la dashboard
+-no admite decimales la api? el peso y la distancia los guarda con muchos decimales
+-hacer fetch en un componente hijo o poner toda la logica en un padre y usar redux

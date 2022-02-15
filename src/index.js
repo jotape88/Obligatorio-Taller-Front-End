@@ -17,14 +17,14 @@ import  reducer from './components/reducers/reducer';
 const store = createStore(reducer);
 
 ReactDOM.render(
-  
+
   <React.StrictMode>
 
     <Provider store={store}>
       <Header/>
       <App />
-      </Provider>
-    <Footer/>
+      <Footer/>
+    </Provider>
 
   </React.StrictMode>,
   document.getElementById('root')

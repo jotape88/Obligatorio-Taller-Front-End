@@ -1,7 +1,7 @@
 import Imagen from '../../img/go-up.png'
 
 const Footer = () => {
-    return  <div className='footer text-start'>
+    return  <div className='row footer text-start'>
                 <a href="#miHeader">
                         <figure id="anclaVolver">
                             <img alt="flechaVovler" title="Flecha para volver al inicio" src={Imagen}></img>

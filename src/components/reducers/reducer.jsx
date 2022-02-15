@@ -6,6 +6,7 @@ import reducerCategs from './reducerCategs';
 import reducerCdsOrig from './reducerCdsOrig';
 import reducerCdsDes from './reducerCdsDes';
 import reducerEnvios from './reducerEnvios';
+import reducerCiudades from './reducerCiudades';
 
 const reducer = combineReducers ({ //Para combinar los reducers
   // reducerIngresoRegistro: reducerIngresoRegistro,
@@ -13,7 +14,8 @@ const reducer = combineReducers ({ //Para combinar los reducers
   reducerCategs: reducerCategs,
   reducerCdsOrig: reducerCdsOrig,
   reducerCdsDes: reducerCdsDes,
-  reducerEnvios: reducerEnvios
+  reducerEnvios: reducerEnvios,
+  reducerCiudades: reducerCiudades,
 });
 
 

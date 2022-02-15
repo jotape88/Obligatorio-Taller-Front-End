@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Imagen from '../../img/loading.gif'
 import FormularioEnvio from '../FormularioEnvio/FormularioEnvio';
 import ListaEnvios from '../ListaEnvios/ListaEnvios';
+import GastoTotal from '../GastoTotal/GastoTotal';
 
 
 const Dashboard = () => {
-  console.log(`Se renderiza la dashboard`)
+  console.log(`Se renderiza el componente Dashboard`)
   //const usuarioLogeado = useSelector((state) => state.reducerIngresoRegistro); //Obtenemos el usuario desde el reducer
   let usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
 
@@ -90,9 +91,11 @@ const Dashboard = () => {
 
 
   const cargarAlDispatch = async () => {
-    console.log(`Se ejecuta el dispatch`)
+    // console.log(`Se ejecuta el dispatch`)
     let categorias = await obtenerCategoriasAPI();
     let departamentos = await cargarDptosAPI();
+    let envios = await cargarEnviosAPI();
+    let ciudades = await obtenerCiudadesAPI();
     // console.log(`Los departamentos son:`, departamentos.departamentos);
     // console.log(`Las categorias son:`, categorias.categorias);
     // let envios =  obtenerEnviosAPI(1);
@@ -111,7 +114,52 @@ const Dashboard = () => {
     // // dispatch({type: 'CargarEnvios', payload: enviosParse});
     dispatch( {type: 'CargarCategorias', payload: categorias} );
     dispatch( {type: 'CargarDepartamentos', payload: departamentos} );
+    dispatch( {type: 'CargarEnvio', payload: envios} );
+    dispatch( {type: 'CargarCiudades', payload: ciudades} );
   }
+
+
+
+  
+    const cargarEnviosAPI = async () => {
+        // e.preventDefault();
+        const myHeaders = new Headers();
+
+        myHeaders.append("apikey", usuarioLogeado.apiKey);
+        myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow'
+        };
+
+        return await fetch(`https://envios.develotion.com/envios.php?idUsuario=${usuarioLogeado.idUsuario}`, requestOptions)
+                     .then(response => response.json())
+                     .then((result) => result)
+                     .catch(error => console.log('error', error));
+      }
+
+    const obtenerCiudadesAPI = async (id) => {
+        var myHeaders = new Headers();
+
+        myHeaders.append("apikey", usuarioLogeado.apiKey);
+        myHeaders.append("Content-Type", "application/json");
+
+        var requestOptions = {
+          method: 'GET',
+          headers: myHeaders,
+          redirect: 'follow'
+        };
+
+        return      await fetch(`https://envios.develotion.com/ciudades.php`, requestOptions)
+                        .then(response => response.json())
+                        .then((result) => result)
+                        .catch(error => console.log('error', error));
+
+    }
+
+
 
     useEffect(() => {
        const datosCargados = async() =>{ 
@@ -132,6 +180,7 @@ const Dashboard = () => {
 
   //#region Renderizado
   return (
+      console.log(`Se renderiza el return del Dashboard`),
       <>
           <div id="user-info">
               <p>Usuario:</p>
@@ -142,8 +191,7 @@ const Dashboard = () => {
           </div>
           { banderaLlamadasAPI ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  }
           { banderaLlamadasAPI ? <ListaEnvios /> :  ""} 
-
-
+          { banderaLlamadasAPI ? <GastoTotal /> :  ""}     
       </>
   )
   //#endregion

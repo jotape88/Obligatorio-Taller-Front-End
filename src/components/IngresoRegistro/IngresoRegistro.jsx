@@ -6,7 +6,8 @@ import { useNavigate  } from 'react-router-dom';
 
 //#region ( Components )
 const IngresoRegistro = () => {
-    sessionStorage.clear(); //Limpiamos los datos de sesion cada vez que redirigimos al login
+    sessionStorage.clear(); //Limpiamos los datos de sesion cada vez que redirigimos al login (cuando hacemos logout desde el header)
+    console.log("Se renderiza el componente IngresoRegistro");
 
     //#region [Hooks]
     const refInputUsuario = useRef();
@@ -61,9 +62,9 @@ const IngresoRegistro = () => {
         e.preventDefault(); //Para evitar que no se recargue la pagina
 
         if (validarDatos(elUsuario, laContrasenia)){
-            console.log('Login correcto');
+            // console.log('Login correcto');
             let res = await llamadaAPI(elUsuario, laContrasenia, 'login.php');
-            console.log(res);
+            // console.log(res);
 
              if (res.codigo === 200){
                 let persona = {
@@ -91,7 +92,7 @@ const IngresoRegistro = () => {
 
         if (validarDatos(elUsuario, laContrasenia)){
             let res = await llamadaAPI(elUsuario, laContrasenia, 'usuarios.php');
-            console.log(res);
+            // console.log(res);
             //TODO seguir aca
             
             if (res.codigo === 200){
@@ -109,7 +110,8 @@ const IngresoRegistro = () => {
 
     //#region [Renderizado]
 return (
-     <div className='formularioRegistro row justify-content-center'>
+    console.log("Se renderiza el return de IngresoRegistro"),
+     <div className='row formularioRegistro justify-content-center'>
 
         <Form className='col-10 col-sm-8 col-md-6 col-lg-4 col-xl-3 mt-5'>
 

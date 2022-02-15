@@ -52,7 +52,7 @@ const App = () => {
   //   )         
   // } else {
     return (
-      <div className="App">
+      <div className="App container-fluid">
         <BrowserRouter>
           <Routes>
       

@@ -6,7 +6,7 @@ import Imagen from '../../img/loading.gif'
 
 
 const FormularioEnvio = () => {
-    // console.log(`Se renderiza el componente FomrularioEnvio`)
+    console.log(`Se renderiza el componente FomrularioEnvio`)
     //#region datos del reduce
     const reduceDptos = useSelector((state) => state.reducerDptos);
     const departamentos = reduceDptos[0].departamentos;
@@ -90,6 +90,19 @@ const FormularioEnvio = () => {
         }
         return ciudad;
     }
+    
+    const calcularDistanciaEntreCiudades = (latOrigen, lonOrigen, latDestino, lonDestino) => {
+
+        const distancia = getDistance(
+            { latitude: latOrigen, longitude: lonOrigen },
+            { latitude: latDestino, longitude: lonDestino });
+        return  (distancia / 1000).toFixed(2); //Guardamos la distancia solo hasta dos decimales
+
+    }
+
+    // { latitude: ciudadOrigenObjeto.latitud, longitude: ciudadOrigenObjeto.longitud },
+    // { latitude: ciudadDestinoObjeto.latitud, longitude: ciudadDestinoObjeto.longitud });
+
 
     const handlerEnvio = async (e) => {
         e.preventDefault();
@@ -125,11 +138,13 @@ const FormularioEnvio = () => {
         const ciudadOrigenObjeto = traerCiudadXId(ciudadOrigenRef.current.value); //A traves del id de la ciudad que obtenemos del useRef, se obtiene el objeto completo
         const ciudadDestinoObjeto = traerCiudadXId(ciudadDestinoRef.current.value);
 
+        let latOrigen =  ciudadOrigenObjeto.latitud;
+        let lonOrigen = ciudadOrigenObjeto.longitud;
+        let latDestino = ciudadDestinoObjeto.latitud;
+        let lonDestino = ciudadDestinoObjeto.longitud;
+
         //Valores calculados
-        const distancia = getDistance(
-            { latitude: ciudadOrigenObjeto.latitud, longitude: ciudadOrigenObjeto.longitud },
-            { latitude: ciudadDestinoObjeto.latitud, longitude: ciudadDestinoObjeto.longitud });
-        const distanciaEnKms = (distancia / 1000).toFixed(2); //Guardamos la distancia solo hasta dos decimales
+        let distanciaEnKms = calcularDistanciaEntreCiudades(latOrigen, lonOrigen, latDestino, lonDestino);
 
         const precioTotal = calcularPrecioEnvio(pesoPaqueteRef.current.value, distanciaEnKms);
 
@@ -208,6 +223,12 @@ const FormularioEnvio = () => {
         setBanderaCiudadesDestino(true);
     }
     
+    const handlerCalculadora = () => {
+        let ciudadOrigen = ciudadOrigenRef.current.value;
+        let ciudadDestino = ciudadDestinoRef.current.value;
+
+    }
+
     // useEffect(() => {
     //     const datosCargados = async() =>{ 
     //        await cargarAlDispatch(); 
@@ -286,6 +307,9 @@ const FormularioEnvio = () => {
 
             <Button onClick={handlerEnvio} className='rounded mt-4 py-1' id="btnAgregarEnvio" type="submit">
                 Agregar envío
+            </Button>
+            <Button onClick={(en) => calcularDistanciaEntreCiudades(en, e.id) } variant="info" className='rounded mt-4 py-1 px-1' id="btnCalcularDistancia" type="submit">
+                Calcular distancia
             </Button>
         </Form>
 
