@@ -67,11 +67,13 @@ const FormularioEnvio = () => {
     
     //#region Metodos
     const calcularPrecioEnvio = (peso, distancia) => {
+        // let total = 0;
         let precioBase = 50;
         let precioXKilo = 10;
         let recargoPorDistancia = Math.floor(distancia / 100) * 50; //Cada 100km se le suma 50 pesos, mathfloor para redondear
 
-        return precioBase + (peso * precioXKilo) + recargoPorDistancia;
+        return precioBase + (peso * precioXKilo) + recargoPorDistancia ? distancia >= 100 : precioBase + (peso * precioXKilo); 
+        // return precioBase + (peso * precioXKilo) + recargoPorDistancia;
     }
     //#endregion
 
@@ -223,10 +225,17 @@ const FormularioEnvio = () => {
         setBanderaCiudadesDestino(true);
     }
     
-    const handlerCalculadora = () => {
-        let ciudadOrigen = ciudadOrigenRef.current.value;
-        let ciudadDestino = ciudadDestinoRef.current.value;
+    const handlerCalculadora = (e) => {
+        e.preventDefault();
+        const ciudadOrigen = traerCiudadXId(ciudadOrigenRef.current.value); //A traves del id de la ciudad que obtenemos del useRef, se obtiene el objeto completo
+        const ciudadDestino = traerCiudadXId(ciudadDestinoRef.current.value);
 
+        let latOrigen =  ciudadOrigen.latitud;
+        let lonOrigen = ciudadOrigen.longitud;
+        let latDestino = ciudadDestino.latitud;
+        let lonDestino = ciudadDestino.longitud;
+        let dis = calcularDistanciaEntreCiudades(latOrigen, lonOrigen, latDestino, lonDestino)
+        setMensajes(`La distancia entre ambas ciudades es: ${dis} Kms`);
     }
 
     // useEffect(() => {
@@ -301,14 +310,14 @@ const FormularioEnvio = () => {
                     ))}      
                 </Form.Select>
 
-                <Form.Control required ref={pesoPaqueteRef}  className="input" type="number" min="0" step=".1" placeholder="Peso del paquete (en Kg.)" />
+                <Form.Control ref={pesoPaqueteRef}  className="input" type="number" min="0" step=".1" placeholder="Peso del paquete (en Kg.)" />
                 
             </Form.Group>
 
-            <Button onClick={handlerEnvio} className='rounded mt-4 py-1' id="btnAgregarEnvio" type="submit">
+            <Button onClick={ handlerEnvio } className='rounded mt-4 py-1' id="btnAgregarEnvio" type="submit">
                 Agregar envío
             </Button>
-            <Button onClick={(en) => calcularDistanciaEntreCiudades(en, e.id) } variant="info" className='rounded mt-4 py-1 px-1' id="btnCalcularDistancia" type="submit">
+            <Button onClick={ handlerCalculadora } variant="info" className='rounded mt-4 py-1 px-1' id="btnCalcularDistancia" type="submit">
                 Calcular distancia
             </Button>
         </Form>
