@@ -4,10 +4,8 @@ import React, {useState, useEffect} from 'react'
 import Header from './components/Header/Header';
 import IngresoRegistro from './components/IngresoRegistro/IngresoRegistro';
 import Footer from './components/Footer/Footer';
-import Contenido from './components/Contenido/Contenido';
 import Dashboard from './components/Dashboard/Dashboard';
 import NotFound from './components/Contenido/NotFoundPage';
-import Logout from './components/Contenido/Logout';
 
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 

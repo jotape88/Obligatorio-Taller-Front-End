@@ -25,7 +25,7 @@ const ListaEnvios = () => {
 
     return (
         // console.log(`Se renderiza el return ListaEnvios`),
-        <div className='row justify-content-center'>
+        <section className='row justify-content-center'>
             <h2 className='col-12 mt-5 mb-4'>Gasto total de envíos</h2>
 
                 <Card className="card pb-5 w-50 rounded">
@@ -38,7 +38,7 @@ const ListaEnvios = () => {
 
                {/* <h4 className="mb-5">Usuario: {usuarioLogueado.nombre}</h4>
                <h4 className="pb-5">$ {costoTotal}</h4> */}
-        </div>
+        </section>
     )
 }
 

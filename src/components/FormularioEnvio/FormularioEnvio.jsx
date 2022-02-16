@@ -67,13 +67,11 @@ const FormularioEnvio = () => {
     
     //#region Metodos
     const calcularPrecioEnvio = (peso, distancia) => {
-        // let total = 0;
         let precioBase = 50;
         let precioXKilo = 10;
         let recargoPorDistancia = Math.floor(distancia / 100) * 50; //Cada 100km se le suma 50 pesos, mathfloor para redondear
 
-        return precioBase + (peso * precioXKilo) + recargoPorDistancia ? distancia >= 100 : precioBase + (peso * precioXKilo); 
-        // return precioBase + (peso * precioXKilo) + recargoPorDistancia;
+        return distancia >= 100 ? precioBase + (peso * precioXKilo) + recargoPorDistancia  : precioBase + (peso * precioXKilo); 
     }
     //#endregion
 
@@ -106,6 +104,24 @@ const FormularioEnvio = () => {
     // { latitude: ciudadDestinoObjeto.latitud, longitude: ciudadDestinoObjeto.longitud });
 
 
+    //1era parte - Validar que los departamentos hayan sido seleccionados y que la categoria y el peso no esten vacios
+    const validarCamposVacios = () => {
+        if(ciudadOrigenRef?.current == null || ciudadDestinoRef?.current == null || catPaqueteRef?.current.value === '' || pesoPaqueteRef?.current.value === ''){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //2da validacion - Validamos que se hayan seleccionado ciudades de origen y destino aun cuando los departamentos si esten seleccionados
+    const validarCiudadesVacias = () => {
+        if(ciudadOrigenRef?.current?.value === '' || ciudadDestinoRef?.current?.value === '') {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     const handlerEnvio = async (e) => {
         e.preventDefault();
 
@@ -121,21 +137,14 @@ const FormularioEnvio = () => {
         // catPaquete = catPaqueteRef.current.value;
         // pesoPaquete = pesoPaqueteRef.current.value;
 
-        
-        
-
-        //#region [Validaciones]
-        //1era parte - Validar que los departamentos hayan sido seleccionados y que la categoria y el peso no esten vacios
-        if(ciudadOrigenRef.current == null || ciudadDestinoRef.current == null || catPaqueteRef.current.value === '' || pesoPaqueteRef.current.value === ''){
+        if(!validarCamposVacios()) {
             setMensajes('Todos los campos son obligatorios');
             return;
         }
-        //2da parte - Validar que se hayan seleccionado ciudades de origen y destino aun cuando los departamentos si esten seleccionados
-        if(ciudadOrigenRef.current.value === '' || ciudadDestinoRef.current.value === ''){
+        if(!validarCiudadesVacias()) {
             setMensajes('Las ciudades son obligatorias');
             return;
         }
-        //#endregion
 
         const ciudadOrigenObjeto = traerCiudadXId(ciudadOrigenRef.current.value); //A traves del id de la ciudad que obtenemos del useRef, se obtiene el objeto completo
         const ciudadDestinoObjeto = traerCiudadXId(ciudadDestinoRef.current.value);
@@ -227,6 +236,12 @@ const FormularioEnvio = () => {
     
     const handlerCalculadora = (e) => {
         e.preventDefault();
+
+        if(!validarCiudadesVacias()) {
+            setMensajes('Debe seleccionar ambas ciudades');
+            return;
+        }
+
         const ciudadOrigen = traerCiudadXId(ciudadOrigenRef.current.value); //A traves del id de la ciudad que obtenemos del useRef, se obtiene el objeto completo
         const ciudadDestino = traerCiudadXId(ciudadDestinoRef.current.value);
 
@@ -258,7 +273,7 @@ const FormularioEnvio = () => {
   return (
       console.log('Se renderiza el formulario envio'),
 
-    <div className='row justify-content-center mb-5'>
+    <section className='row justify-content-center mb-5'>
         <h2>Agregar un envío</h2>
 
         <Form className='col-10 col-md-6 col-lg-4 mt-4'>
@@ -281,7 +296,6 @@ const FormularioEnvio = () => {
                         ))}
                     </Form.Select>
                     : ""}
-
 
 
 
@@ -324,7 +338,7 @@ const FormularioEnvio = () => {
 
         {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 
 
-    </div>
+    </section>
 
   )
 }

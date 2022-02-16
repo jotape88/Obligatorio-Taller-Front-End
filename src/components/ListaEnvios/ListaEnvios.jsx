@@ -54,15 +54,15 @@ const ListaEnvios = () => {
     // }
 
      const eliminarEnvio = async (idEnvio) => { 
-        var myHeaders = new Headers();
+        const myHeaders = new Headers();
         myHeaders.append("apikey", usuarioLogueado.apiKey);
         myHeaders.append("Content-Type", "application/json");
         
-        var raw = JSON.stringify({
+        const raw = JSON.stringify({
           "idEnvio": idEnvio
         });
         
-        var requestOptions = {
+        const requestOptions = {
           method: 'DELETE',
           headers: myHeaders,
           body: raw,
@@ -123,7 +123,7 @@ const ListaEnvios = () => {
 
     return (
         console.log(`Se renderiza el return ListaEnvios`),
-        <div className='row justify-content-center'>
+        <section className='row justify-content-center'>
             <h2 className='col-6 mt-5'>Lista de envíos</h2>
 
                 <Table className='col-6 striped bordered hover mt-3 w-75'>
@@ -149,7 +149,7 @@ const ListaEnvios = () => {
                   </tbody>
                 </Table>       
 
-        </div>
+        </section>
     )
 }
 

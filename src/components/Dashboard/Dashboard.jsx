@@ -181,7 +181,7 @@ const Dashboard = () => {
   //#region Renderizado
   return (
       console.log(`Se renderiza el return del Dashboard`),
-      <>
+      <section>
           <div id="user-info">
               <p>Usuario:</p>
               <p>{usuarioLogeado.nombre}</p>
@@ -192,7 +192,7 @@ const Dashboard = () => {
           { banderaLlamadasAPI ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  }
           { banderaLlamadasAPI ? <ListaEnvios /> :  ""} 
           { banderaLlamadasAPI ? <GastoTotal /> :  ""}     
-      </>
+      </section>
   )
   //#endregion
 }

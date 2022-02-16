@@ -111,7 +111,7 @@ const IngresoRegistro = () => {
     //#region [Renderizado]
 return (
     console.log("Se renderiza el return de IngresoRegistro"),
-     <div className='row formularioRegistro justify-content-center'>
+     <section className='row formularioRegistro justify-content-center'>
 
         <Form className='col-10 col-sm-8 col-md-6 col-lg-4 col-xl-3 mt-5'>
 
@@ -130,7 +130,7 @@ return (
 
         {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 
 
-     </div>
+     </section>
   )
   //#endregion
 }

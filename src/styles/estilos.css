@@ -51,10 +51,28 @@ input[type="submit"], #btnAgregarEnvio {   /*Boton de agregar envio*/
     transition: all 0.4s;
     text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
 }
-#btnAgregarEnvio:hover {  
+#btnAgregarEnvio:hover, input[type="submit"]:hover, #btnCalcularDistancia:hover {  
     background-color: rgb(70, 69, 71);
+    box-shadow: 1px 1px 12px rgb(119, 119, 119);
+
+}
+#btnCalcularDistancia:hover {  
+    background-color: rgb(117, 116, 202);
 }
 
+#btnCalcularDistancia{
+    display: block;
+    text-align: center;
+    justify-content: center;
+    background-color: rgba(58, 56, 197, 0.397);
+    color: white;
+    border: 1px solid black;
+    box-shadow: 1px 1px 12px rgb(119, 119, 119);
+    width: 24%;
+    margin: 0 auto;
+    transition: all 0.4s;
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
+}
 
 /* ANCLA VOLVER */
 #anclaVolver {
