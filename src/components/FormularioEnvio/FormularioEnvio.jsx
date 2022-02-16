@@ -115,7 +115,7 @@ const FormularioEnvio = () => {
 
     //2da validacion - Validamos que se hayan seleccionado ciudades de origen y destino aun cuando los departamentos si esten seleccionados
     const validarCiudadesVacias = () => {
-        if(ciudadOrigenRef?.current?.value === '' || ciudadDestinoRef?.current?.value === '') {
+        if(ciudadOrigenRef?.current?.value == '' || ciudadDestinoRef?.current?.value == '' || ciudadOrigenRef?.current?.value === undefined || ciudadDestinoRef?.current?.value === undefined) {
             return false;
         } else {
             return true;
@@ -273,7 +273,7 @@ const FormularioEnvio = () => {
   return (
       console.log('Se renderiza el formulario envio'),
 
-    <section className='row justify-content-center mb-5'>
+    <section className='row justify-content-center'>
         <h2>Agregar un envío</h2>
 
         <Form className='col-10 col-md-6 col-lg-4 mt-4'>
