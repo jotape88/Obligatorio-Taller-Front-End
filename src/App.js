@@ -6,6 +6,7 @@ import IngresoRegistro from './components/IngresoRegistro/IngresoRegistro';
 import Footer from './components/Footer/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
 import NotFound from './components/Contenido/NotFoundPage';
+import Home from './components/Contenido/Home';
 
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 
@@ -54,6 +55,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
       
+            <Route path="/" element={ <Home />} />
             <Route path="/Login" element={ <IngresoRegistro/> } />
             {/* <Route path="/Logout" element={ <Logout/> } /> */}
             <Route path="/Dashboard" element={ <Dashboard/> } />

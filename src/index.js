@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import './index.css';
@@ -11,10 +10,15 @@ import App from './App';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import logger from "redux-logger";
 import  reducer from './components/reducers/reducer';
 
-const store = createStore(reducer);
+const store = createStore(
+    reducer, 
+    composeWithDevTools(applyMiddleware(logger)));
+
 
 ReactDOM.render(
 
