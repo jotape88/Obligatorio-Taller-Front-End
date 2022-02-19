@@ -5,6 +5,7 @@ DUDAS:
 -arreglar con un try catch cuando te deslogueas, que no explote el codigo si estamos en la dashboard
 -no admite decimales la api? el peso y la distancia los guarda con muchos decimales
 -hacer fetch en un componente hijo o poner toda la logica en un padre y usar redux
+-deje el reduxdevtools instalado en el index, la {store} tambien esta en el indx
 
 
 PENDIENTES:

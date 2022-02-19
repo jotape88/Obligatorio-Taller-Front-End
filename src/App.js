@@ -9,10 +9,12 @@ import NotFound from './components/Contenido/NotFoundPage';
 import Home from './components/Contenido/Home';
 
 import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { Container, Card, Col, Row } from "react-bootstrap";
 
 import { createStore } from "redux";
 import { Provider, useSelector } from "react-redux";
 import  reducer from './components/reducers/reducer';
+import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
 
 
 const App = () => {
@@ -51,23 +53,34 @@ const App = () => {
   //   )         
   // } else {
     return (
-      <div className="App container-fluid">
-        <BrowserRouter>
-          <Routes>
-      
-            <Route path="/" element={ <Home />} />
-            <Route path="/Login" element={ <IngresoRegistro/> } />
-            {/* <Route path="/Logout" element={ <Logout/> } /> */}
-            <Route path="/Dashboard" element={ <Dashboard/> } />
-            <Route path="*" element={ <NotFound/> } />
-              {/* <Header></Header>
-                <IngresoRegistro></IngresoRegistro>}
-                <Dashboard></Dashboard>}
-              <Footer></Footer> */}
-           
-          </Routes>
-        </BrowserRouter>
-      </div>
+      // <div className="App container-fluid">
+
+      <Container>
+        <Row className='text-center'>
+          <Col>
+          
+            <BrowserRouter>
+            <Header />
+              <Routes>  
+               
+                  <Route path="/login" element={ <IngresoRegistro/> } />
+                  <Route path="/dashboard" element={ <Dashboard />}>
+                    <Route index element={ <Home />} />
+                    <Route path="envios" element={ <FormularioEnvio/> } />
+                      {/* <Route path="envios" element={ <FormularioEnvio/> } /> */}
+
+                  </Route>
+                 <Route path="*" element={ <NotFound/> } />
+                
+
+              </Routes>
+
+            </BrowserRouter>
+            {/* <Footer/> */}
+          </Col>
+        </Row>
+      </Container>
+
     )
   
 

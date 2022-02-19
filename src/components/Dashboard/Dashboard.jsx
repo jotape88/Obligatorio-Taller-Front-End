@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
 import Imagen from '../../img/loading.gif'
 import FormularioEnvio from '../FormularioEnvio/FormularioEnvio';
 import ListaEnvios from '../ListaEnvios/ListaEnvios';
+import ListaTopDptos from '../ListaTopDptos/ListaTopDptos';
 import GastoTotal from '../GastoTotal/GastoTotal';
+import { Navbar, Nav, Container } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import { Form, Button, Alert } from 'react-bootstrap';
 
 
 const Dashboard = () => {
@@ -130,15 +135,21 @@ const Dashboard = () => {
       console.log(`Se renderiza el return del Dashboard`),
       <section>
           <div id="user-info">
-              <p>Usuario:</p>
-              <p>{usuarioLogeado.nombre}</p>
+              <span>Usuario:</span>
+              <span>{usuarioLogeado.nombre}</span>
           </div>
           <div id="log-out">
               <a href="/Login">Logout</a>
           </div>
+
+
+
           { banderaLlamadasAPI ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  }
           { banderaLlamadasAPI ? <ListaEnvios /> :  ""} 
-          { banderaLlamadasAPI ? <GastoTotal /> :  ""}     
+          { banderaLlamadasAPI ? <GastoTotal /> :  ""}  
+          { banderaLlamadasAPI ? <ListaTopDptos /> :  ""} 
+          
+             
       </section>
   )
   //#endregion

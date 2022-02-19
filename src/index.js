@@ -25,9 +25,9 @@ ReactDOM.render(
   <React.StrictMode>
 
     <Provider store={store}>
-      <Header/>
+    
       <App />
-      <Footer/>
+    
     </Provider>
 
   </React.StrictMode>,

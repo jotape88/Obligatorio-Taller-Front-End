@@ -6,7 +6,7 @@ html{
 header{
     letter-spacing: 4px;
     color: rgb(255, 255, 255);
-    height: 180px;
+    height: 280px;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3), 0px -4px 10px rgba(255,255,255,0.2);  /* Extraido de:  https://www.codesdope.com/blog/article/25-creative-css3-text-shadow-effects-you-cant-miss/*/ 
     background: linear-gradient(159.17deg, #022461 -9.41%, #455c9a 97.45%); /*Generado en https://cssgradient.io/ */
     box-shadow: 2px 2px 12px rgb(119, 119, 119);
