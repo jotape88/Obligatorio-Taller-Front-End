@@ -74,6 +74,7 @@ const FormularioEnvio = () => {
         }
     }
     //#endregion
+    
 
     //#region Llamadas a la API
     const cargarCiudadesAPI = async (idDpto) => {
@@ -196,7 +197,7 @@ const FormularioEnvio = () => {
       console.log('Se renderiza el formulario envio'),
       <section className='row justify-content-center'>
           <h2>Agregar un envío</h2>
-    
+
           <Form className='col-10 col-md-6 col-lg-4 mt-4'>
               <Form.Group >
                       {/* Select de departamentos */}
@@ -206,7 +207,7 @@ const FormularioEnvio = () => {
                           <option required={true}  key={dptoO.id} value={dptoO.id}> {dptoO.nombre} </option>
                       ))} 
                   </Form.Select>
-                        
+
                       {/* Ciudades de acuerdo al dpto elegido */}
                       { banderaCiudadesOrigen ?                
                       <Form.Select ref={ciudadOrigenRef} className="select mb-4 w-50 mb-5" defaultValue="" >
@@ -216,8 +217,8 @@ const FormularioEnvio = () => {
                           ))}
                       </Form.Select>
                       : ""}
-    
-                            
+
+
                       {/* Select de departamentos */}
                   <Form.Select onChange={handleChangeSelectDestino} className="select mb-2" defaultValue="" >
                       <option  value="" disabled={true}>Departamento de destino</option>   
@@ -225,7 +226,7 @@ const FormularioEnvio = () => {
                           <option key={dptoO.id} value={dptoO.id}> {dptoO.nombre} </option>
                       ))} 
                   </Form.Select>
-                        
+
                       {/* Ciudades de acuerdo al dpto elegido */}
                       { banderaCiudadesDestino ?                
                       <Form.Select ref={ciudadDestinoRef} className="select mb-4 w-50 mb-5" defaultValue="" >
@@ -235,7 +236,7 @@ const FormularioEnvio = () => {
                           ))}
                       </Form.Select>
                       : ""}
-    
+
                   {/* Select de categorias */}
                   <Form.Select ref={catPaqueteRef} className="select mb-4" defaultValue="" > 
                   <option value="" disabled={true}>Categoría del paquete</option> 
@@ -243,11 +244,11 @@ const FormularioEnvio = () => {
                           <option key={categs.id} value={categs.id}> {categs.nombre} </option>
                       ))}      
                   </Form.Select>
-                        
+
                   {/* Input de peso del paquete */}
                   <Form.Control ref={pesoPaqueteRef}  className="input" type="number" min="0" step=".1" placeholder="Peso del paquete (en Kg.)" />       
               </Form.Group>
-                        
+
               {/* Botones de envio */}
               <Button onClick={ handlerEnvio } className='rounded mt-4 py-1' id="btnAgregarEnvio" type="submit">
                   Agregar envío
@@ -259,9 +260,9 @@ const FormularioEnvio = () => {
                         
           {/* Mensajes de error y confirmacion */}
           {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 
-                        
+
       </section>
-    
+
     )
     //#endregion
 }

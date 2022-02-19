@@ -66,7 +66,7 @@ const IngresoRegistro = () => {
                 } 
                 sessionStorage.setItem('usuario', JSON.stringify(persona)); //Guardamos el usuario en el localStorage en version JSON stringify
                 dispatch({ type: 'Ingreso', payload: persona }); //Guardamos el usuario en el store
-                navigate('/Dashboard'); //Si todo esta ok, redirigimos al dashboard
+                navigate('/home'); //Si todo esta ok, redirigimos al dashboard
              } else{
                 setMensajes(res.mensaje); //Si no, mostramos el mensaje de error
              }       

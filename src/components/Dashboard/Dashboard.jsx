@@ -144,10 +144,10 @@ const Dashboard = () => {
 
 
 
-          { banderaLlamadasAPI ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  }
+          {/* { banderaLlamadasAPI ? <FormularioEnvio /> :  <div id="cargando"><p>Cargando...</p> <img src={Imagen} alt="imagen de carga" /></div>  }
           { banderaLlamadasAPI ? <ListaEnvios /> :  ""} 
           { banderaLlamadasAPI ? <GastoTotal /> :  ""}  
-          { banderaLlamadasAPI ? <ListaTopDptos /> :  ""} 
+          { banderaLlamadasAPI ? <ListaTopDptos /> :  ""}  */}
           
              
       </section>

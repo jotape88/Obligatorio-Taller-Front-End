@@ -9,7 +9,7 @@ const Home = () => {
             <figure className='imagenHome'>
                 <img className='img-fluid' src={Imagen} alt="imagen de una cadena de una warehouse con trabajadores" title='Foto de un warehouse'/>
             </figure>
-            <h2 className='mt-5'>Bienvenido, si aún no se autenticó, por favor diríjase al <NavLink className='loginTxt' to="/Login">login</NavLink> para poder utilizar el sistema</h2>
+            <h2 className='mt-5'>Bienvenido, por favor elija una opción en el menu superior</h2>
         </section>
   )
 }

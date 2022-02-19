@@ -176,3 +176,28 @@ footer{
 .loginTxt:hover{
     color:rgba(7, 4, 173, 0.945);
 }
+
+.navLinks{
+    display: block; 
+    background-color: rgb(8, 71, 143);
+    color: white;
+    text-align: center;
+    padding: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 17px;
+    padding: 10px;
+    border-radius: 25px;
+    /* Añade sombra para los botones del menu */
+    box-shadow: 4px 4px 10px rgb(42, 42, 43);
+    border-bottom: 3px solid rgb(8, 71, 143); 
+    /* Añadimos difuminado */
+    transition: all 0.4s;
+    filter: blur(0.5px);
+}
+.navLinks:hover {
+    color:white;
+    background-color: rgb(2, 33, 68);
+    border-bottom: 3px solid rgb(0, 0, 0); 
+}
