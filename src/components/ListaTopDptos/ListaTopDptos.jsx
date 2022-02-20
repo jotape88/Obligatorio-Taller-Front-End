@@ -13,50 +13,64 @@ const ListaTopDptos = () => {
     const dispatch = useDispatch();
     const usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
 
-    const reduceEnvios = useSelector((state) => state.reducerEnvios[0]);
-    const reducerCdsDes = useSelector((state) => state.reducerCdsDes.ciudades);
+    const reduceE = useSelector((state) => state.reducerEnvios[0]);
+    const reduceEnvios = reduceE.envios;
+
+    const reducerCiudades = useSelector((state) => state.reducerCiudades.ciudades);
+
+    console.log(`Las ciudades del reducerciud son`, reduceEnvios, reducerCiudades)
 
     const reduceDptos = useSelector((state) => state.reducerDptos);
     const departamentos = reduceDptos[0].departamentos;
+    // console.log("los departamentos son", departamentos);
 
-    const dptosTop = [];
+    // const [topDepartamentos, setTopDepartamentos] = useState([]);
 
-    // console.log(`Las ciudades son REDUCER: `, reduceCiudades);
-    // console.log(`Los envios del REDUCER: `, reduceEnvios);
-    //#endregion
+    let topDepartamentos = [];
 
-    const cargarEnviosAPI = async () => {
-        let myHeaders = new Headers();
-        myHeaders.append("apikey", usuarioLogeado.apiKey);
-        myHeaders.append("Content-Type", "application/json");
-        let requestOptions = {
-          method: 'GET',
-          headers: myHeaders,
-          redirect: 'follow'
-        };
-        return await fetch(`https://envios.develotion.com/envios.php?idUsuario=${usuarioLogeado.idUsuario}`, requestOptions)
-                     .then((response) => {
-                       return new Promise((resolve, reject) => {
-                         if (response.status == 200) {
-                           return resolve(response.json());
-                         } else {
-                           return reject("Error");
-                         }
-                       });
-                     })
-       
-    };
+    //Metodo para obtener el nombre del departamento a traves del id del mismo
+    const obtenerNombreDepartamento = (id) => {
+        let nombreDepartamento = '';
+        departamentos.forEach(departamento => {
+            if (departamento.id === id) {
+                nombreDepartamento = departamento.nombre;
+            }
+        })
+        return nombreDepartamento;
+    }
 
+    
+    //Recorremos reduceEnvios y comparamos ciudad_destino con el id de la ciudad en el reducer de ciudades
+    //Guardamos en un array los departamentos que aparecen en ambas listas junto con la cantidad de veces que se repite
+    const topDptos = () => {
+        reduceEnvios.forEach(envio => { 
+            reducerCiudades.forEach(ciudad => {
+                if (envio.ciudad_destino === ciudad.id) {
+                    let departamento = obtenerNombreDepartamento(ciudad.id_departamento);
+                    let existe = false;
+                    topDepartamentos.forEach(dpto => {
+                        if (dpto.departamento === departamento) {
+                            dpto.cantidad++;
+                            existe = true;
+                        }
+                    });
+                    if (!existe) {
+                        topDepartamentos.push({
+                            departamento: departamento,
+                            cantidad: 1
+                        });
+                    }
+                }
+            });
+        });
+    }
 
+    topDptos();
 
-    //#region Metodos
-    // const obtenerNombreDeCiudadXId = (idCiudad) => {
-    //   console.log(`Se renderiza el obtenerNombredeCiudad con el id ${idCiudad}`);
-    //   const nombreCiudad = reduceCiudades.find(ciudad => ciudad.id == idCiudad);
-    //   console.log(`El nombre de ciudad es: ` + nombreCiudad.nombre);
-    //   return nombreCiudad.nombre;
-    // }
-    //#endregion
+    //Ordenamos de mayor a menor por la cantidad de veces que se repite
+    topDepartamentos.sort((a, b) => b.cantidad - a.cantidad);
+    
+    console.log(topDepartamentos);
 
     //#region Renderizado
     return (
@@ -73,13 +87,13 @@ const ListaTopDptos = () => {
                   </tr>
                 </thead>
                 <tbody>
-              {reduceEnvios.envios.map((e) => (
-                  <tr key={e.id}>
-                    <td>1</td>
-                    <td>(e.ciudad_destino)</td>
-                    <td>{e.distancia} Kms</td>
-                    <td>$ {e.precio}</td>
-                    <td><Button onClick={(en) => (en, e.id) } variant="danger">Eliminar</Button></td>
+            
+            {/*A efectos practicos, usar un id autogenerado para la key no genera problemas en esta instancia*/}
+              {topDepartamentos.slice(0, 5).map((e, index) => (
+                  <tr key={index+1}> 
+                    <td>{index+1}</td>
+                    <td>{e.departamento}</td>
+                    <td>{e.cantidad}</td>
                   </tr>
               ))}
                 </tbody>

@@ -26,17 +26,12 @@ const ListaEnvios = () => {
     calcularTotalDeEnvios();
     //#endregion
 
-    //#region Renderizado#
+    //#region Renderizado
     return (
-        <section className='row justify-content-center'>
-            <h2 className='col-12 mt-5 mb-4'>Gasto total de envíos</h2>
-                <Card className="card pb-4 w-50 rounded">
-                    <Card.Body className='my-4'>
-                        <Card.Title>Usuario: {usuarioLogueado.nombre}</Card.Title>
-                        <Card.Text >$ {costoTotal}</Card.Text>
-                    </Card.Body>
-                </Card>
-        </section>
+        <div id="gastoTotal" className='justify-content-end text-end'>
+            <h5>Total gastado</h5>
+            <span>$ {costoTotal}</span>
+        </div>
     )
     //#endregion
 }

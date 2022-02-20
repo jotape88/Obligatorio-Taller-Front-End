@@ -66,7 +66,7 @@ const IngresoRegistro = () => {
                 } 
                 sessionStorage.setItem('usuario', JSON.stringify(persona)); //Guardamos el usuario en el localStorage en version JSON stringify
                 dispatch({ type: 'Ingreso', payload: persona }); //Guardamos el usuario en el store
-                navigate('/home'); //Si todo esta ok, redirigimos al dashboard
+                navigate('/'); //Si todo esta ok, redirigimos al dashboard
              } else{
                 setMensajes(res.mensaje); //Si no, mostramos el mensaje de error
              }       
@@ -98,8 +98,8 @@ const IngresoRegistro = () => {
     console.log("Se renderiza el return de IngresoRegistro");
 
     return (
-        <section className='row formularioRegistro justify-content-center'>
-           <Form className='col-10 col-sm-8 col-md-6 col-lg-4 col-xl-3 mt-5'>
+        <section id="sectionFormularioRegistro" className='row justify-content-center'>
+           <Form className='col-10 col-md-6 col-lg-4 col-xl-4 mt-5'>
 
              <Form.Group className="mb-3" controlId="formBasicEmail">
                <Form.Control required  ref={refInputUsuario} type="text" placeholder="Usuario" />

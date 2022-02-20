@@ -13,6 +13,7 @@ const ListaEnvios = () => {
     const dispatch = useDispatch();
     const reduceEnvios = useSelector((state) => state.reducerEnvios[0]);
     const reduceCiudades = useSelector((state) => state.reducerCiudades.ciudades);
+    console.log(`Los envios son`, reduceEnvios, reduceCiudades);
     console.log(`Las ciudades son REDUCER: `, reduceCiudades);
     console.log(`Los envios del REDUCER: `, reduceEnvios);
     //#endregion

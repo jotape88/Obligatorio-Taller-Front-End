@@ -3,7 +3,7 @@ html{
 }
 
 /* HEADER */
-header{
+#miHeader{
     letter-spacing: 4px;
     color: rgb(255, 255, 255);
     height: 280px;
@@ -99,28 +99,31 @@ footer{
 #user-info{
     position: relative;
     text-align: end;
-    right: 50px;
-    top: -140px; 
+    right: -16rem;
+    top: -21rem; 
 }
 #user-info p {
     font-weight: 600;
     font-size: 1.5rem;
-    color:white;
     margin: 0;
-    text-shadow: 1px 1px 1px rgb(240, 240, 240);
+    color:rgba(255, 255, 255, 0.685);
+    text-shadow: 1px 1px 12px rgb(37, 37, 37);
 }
-#user-info p:nth-of-type(2) {
+#user-info p:nth-of-type(2), #gastoTotal span{
     font-size: 18px;
     color: rgb(255, 255, 255);
     font-style: italic;
+}
+#gastoTotal span{
+    font-size: 1.4rem;
 }
 
 /* DESLOGUEO */
 #log-out{
     position: relative;
     text-align: end;
-    right: 50px;
-    top: -115px; 
+    right: -16rem;
+    top: -16rem; 
 }
 
 #log-out a{
@@ -141,6 +144,7 @@ footer{
     color:#02215a;
     font-size: 2.5rem;
     font-weight: 700;
+    margin-top: 100px;
 }
 
 .card{
@@ -160,6 +164,8 @@ footer{
 }
 
 .imagenHome {
+    position: relative;
+    top: -10rem;
     width: 800px;
 }
 
@@ -177,6 +183,7 @@ footer{
     color:rgba(7, 4, 173, 0.945);
 }
 
+/* Menu de la dashboard */
 .navLinks{
     display: block; 
     background-color: rgb(8, 71, 143);
@@ -195,9 +202,23 @@ footer{
     /* Añadimos difuminado */
     transition: all 0.4s;
     filter: blur(0.5px);
+    position: relative;
+    top: -130px;
+
 }
 .navLinks:hover {
     color:white;
     background-color: rgb(2, 33, 68);
     border-bottom: 3px solid rgb(0, 0, 0); 
+}
+
+/* Componente Total Gastado de la dashboard */
+#gastoTotal{
+    position: relative;
+    top: -20rem;
+    left: 16rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color:rgba(255, 255, 255, 0.685);
+    text-shadow: 1px 1px 12px rgb(37, 37, 37);
 }

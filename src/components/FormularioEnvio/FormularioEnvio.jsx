@@ -9,6 +9,7 @@ const FormularioEnvio = () => {
     //#region Hooks y variables
     const usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
     const reduceDptos = useSelector((state) => state.reducerDptos);
+    console.log(`El contenido de reduce dptos`, reduceDptos);
     const departamentos = reduceDptos[0].departamentos;
     const reduceCiudadesOrigen = useSelector((state) => state.reducerCdsOrig);
     const reduceCiudadesDestino = useSelector((state) => state.reducerCdsDes);
@@ -196,6 +197,7 @@ const FormularioEnvio = () => {
     return (
       console.log('Se renderiza el formulario envio'),
       <section className='row justify-content-center'>
+
           <h2>Agregar un envío</h2>
 
           <Form className='col-10 col-md-6 col-lg-4 mt-4'>

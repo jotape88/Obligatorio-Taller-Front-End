@@ -1,12 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 import React, {useState, useEffect} from 'react'
-import Header from './components/Header/Header';
 import IngresoRegistro from './components/IngresoRegistro/IngresoRegistro';
 import Footer from './components/Footer/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
 import NotFound from './components/Contenido/NotFoundPage';
-import Home from './components/Contenido/Home';
+// import Home from './components/Contenido/Home';
+import ListaTopDptos from './components/ListaTopDptos/ListaTopDptos';
 
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { Container, Card, Col, Row } from "react-bootstrap";
@@ -15,12 +15,12 @@ import { createStore } from "redux";
 import { Provider, useSelector } from "react-redux";
 import  reducer from './components/reducers/reducer';
 import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
+import ListaEnvios from './components/ListaEnvios/ListaEnvios';
+import GastoTotal from './components/GastoTotal/GastoTotal';
+import Header from './components/Header/Header';
 
 
 const App = () => {
-
-  
-
 
   const [isLogin, setIsLogin] = useState(false);	 //Para el login
 
@@ -53,62 +53,35 @@ const App = () => {
   //   )         
   // } else {
     return (
-      // <div className="App container-fluid">
-
-      <Container>
-        <Row className='text-center'>
-          <Col>
-          
-            <BrowserRouter>
-            <Header />
+      <Container>      
+        <Row className='text-center'>        
+          <Col>          
+            <BrowserRouter>         
               <Routes>  
                
                   <Route path="/login" element={ <IngresoRegistro/> } />
-                  <Route path="/" element={ <Dashboard />}>
-                     <Route index element={ <Home />} /> 
-                     <Route path="agregarenvio" element={ <FormularioEnvio/> } />
+                  {/* <Route path="/gastoTotal" element={ <GastoTotal /> } /> */}
+
+                  <Route path="/" element={ <Dashboard /> }>
+                     {/* <Route index element={ <Home />} />  */}
                       {/* <Route path="envios" element={ <FormularioEnvio/> } /> */}
 
-                  </Route>
-                 <Route path="*" element={ <NotFound/> } />
-                
-
+                      
+                     </Route>
+                  
+                  <Route path="formularioEnvio/formularioEnvio" element={ <FormularioEnvio/> } />
+                  <Route path="listaEnvios/listaEnvios" element={ <ListaEnvios/> } />
+                  <Route path="listaTopDptos/listaTopDptos" element={ <ListaTopDptos/> } />
+                  <Route path="*" element={ <NotFound/> } />
+                  
               </Routes>
 
             </BrowserRouter>
-            {/* <Footer/> */}
+            <Footer/>
           </Col>
         </Row>
       </Container>
-
     )
-  
-
-
-  // return (
-  //   <div className="App">
-
-  //       <Provider store={store}>
-
-  //       <Header></Header>
-  //         <IngresoRegistro></IngresoRegistro>
-  //         <Dashboard></Dashboard>
-  //       <Footer></Footer>
-
-  //  			</Provider>
-  //</div>
-      {/* <BrowserRouter>
-        <Routes>
-          <Route path='/IngresoRegistro/IngresoRegistro' element={<IngresoRegistro/>} />
-          <Route path='/Dashboard/Dashboard' element={<Dashboard/>} />
-          <Route component={IngresoRegistro}></Route>
-        </Routes>
-      </BrowserRouter> */}
-    
-  //);
-  
-
-
 }
 
 export default App;
