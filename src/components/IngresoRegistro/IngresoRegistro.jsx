@@ -16,7 +16,8 @@ const IngresoRegistro = () => {
 
     //#region validaciones
     const validarDatos = (nom, pass) =>{
-        return nom.length !== 0 || pass.length !== 0;            
+        let bandera = false;
+        return bandera = true ? nom != '' && pass != '' : bandera;     
     }
     //#endregion
 
@@ -37,41 +38,36 @@ const IngresoRegistro = () => {
             redirect: 'follow'
         };      
         return fetch(`${laUrl}`, requestOptions)
-                .then((response) => {
-                    return new Promise((resolve, reject) => {
-                      if (response.status == 200) {
-                        return resolve(response.json());
-                      } else {
-                        return reject("Error");
-                      }
-                    });
-                  })            
+               .then((response) => response.json())
+               .then((result) => result)
+               .catch((error) => {console.log(error);
+        });           
 
     }
     //#endregion
 
     //#region handlers
-    const handlerIngreso = async (e) => { //Como tenemos que esperar a que el servidor nos responda, es una funcion asincrona
-        e.preventDefault(); //Para evitar que no se recargue la pagina
-        const elUsuario = refInputUsuario.current.value;
-        const laContrasenia = refInputContrasenia.current.value;
-        if (validarDatos(elUsuario, laContrasenia)){
-            const res = await llamadaAPIParaLogin(elUsuario, laContrasenia, 'login.php');
-             if (res.codigo === 200){
-                const persona = {
-                    idUsuario: res.id,
-                    nombre: elUsuario,
-                    apiKey: res.apiKey
-                } 
-                sessionStorage.setItem('usuario', JSON.stringify(persona)); //Guardamos el usuario en el localStorage en version JSON stringify
-                dispatch({ type: 'Ingreso', payload: persona }); //Guardamos el usuario en el store
-                navigate('/'); //Si todo esta ok, redirigimos al dashboard
-             } else{
-                setMensajes(res.mensaje); //Si no, mostramos el mensaje de error
-             }       
-        } else {
-            setMensajes('Debe ingresar un usuario y una contraseña.');
-        }
+    const handlerIngreso = async (e) => { 
+      e.preventDefault(); 
+      const elUsuario = refInputUsuario.current.value;
+      const laContrasenia = refInputContrasenia.current.value;
+      if (validarDatos(elUsuario, laContrasenia)){
+          const res = await llamadaAPIParaLogin(elUsuario, laContrasenia, 'login.php');
+           if (res.codigo === 200){
+              const persona = {
+                  idUsuario: res.id,
+                  nombre: elUsuario,
+                  apiKey: res.apiKey
+              } 
+              sessionStorage.setItem('usuario', JSON.stringify(persona)); //Guardamos el usuario en el localStorage en version JSON stringify
+              dispatch({ type: 'Ingreso', payload: persona }); //Guardamos el usuario en el store
+              navigate('/'); //Si todo esta ok, redirigimos al dashboard
+           } else{
+              setMensajes(res.mensaje); //Si no, mostramos el mensaje de error
+           }       
+      } else {
+          setMensajes('Debe ingresar un usuario y una contraseña.');
+      }
     }
 
     const handlerRegistro = async (e) => {
