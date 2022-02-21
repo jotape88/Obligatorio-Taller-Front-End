@@ -152,10 +152,10 @@ const Dashboard = () => {
 
   //#region Renderizado
   if(usuarioLogeado == null){
-    console.log('No hay usuario logeado, redirigiendo al login');
+    // console.log('No hay usuario logeado, redirigiendo al login');
     return <Navigate replace to={"/login"} />
   } else {
-        console.log(`Usuario logeado, renderizando la dashboard`);
+        // console.log(`Usuario logeado, renderizando la dashboard`);
         if(banderaLlamadasAPI === true){
           return (
                   <div id="sectionDashboard" className='row justify-content-center me-auto'>

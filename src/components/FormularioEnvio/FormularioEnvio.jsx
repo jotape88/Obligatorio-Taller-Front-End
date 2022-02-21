@@ -11,9 +11,8 @@ const FormularioEnvio = () => {
     const categorias = useSelector((state) => state.reducerCategs);
     const ciudades = useSelector((state) => state.reducerCiudades);
 
-
-    const reduceCiudadesOrigen = useSelector((state) => state.reducerCdsOrig);
-    const reduceCiudadesDestino = useSelector((state) => state.reducerCdsDes);
+    const [ciudadesOrigen, setCiudadesOrigen] = useState([]);
+    const [ciudadesDestino, setCiudadesDestino] = useState([]);
 
     const [banderaCiudadesOrigen, setBanderaCiudadesOrigen] = useState();
     const [banderaCiudadesDestino, setBanderaCiudadesDestino] = useState();
@@ -50,8 +49,7 @@ const FormularioEnvio = () => {
     const traerCiudadXIdDesdeReduce = (idCiudad) => {
         let ciudad = null;
         if(ciudades.find(c => c.id === parseInt(idCiudad))) {
-            ciudad = ciudades.find(c => c.id === parseInt(idCiudad));
-            return ciudad;
+            return ciudades.find(c => c.id === parseInt(idCiudad));
         }
         return ciudad;
     }
@@ -79,34 +77,13 @@ const FormularioEnvio = () => {
     
 
     //hacer un metodo para obtener la ciudad mediante el departamento
-    // const obtenerCiudades = (idDpto) => {
-    //     if(idDpto === '') {
-    //         ciudades.map(c => c.idDpto === null);
-
-
-
-    //#region Llamadas a la API
-    const obtenerCiudadDesdeAPI = async (idDpto) => {
-        const myHeaders = new Headers();
-        myHeaders.append("apikey", usuarioLogueado.apiKey);
-        myHeaders.append("Content-Type", "application/json");
-        const requestOptions = {
-          method: 'GET',
-          headers: myHeaders,
-          redirect: 'follow'
-        };
-        return await fetch(`https://envios.develotion.com/ciudades.php?idDepartamento=${idDpto}`, requestOptions)
-                     .then((response) => {
-                         return new Promise((resolve, reject) => {
-                           if (response.status == 200) {
-                             return resolve(response.json());
-                           } else {
-                             return reject("Error");
-                           }
-                         });
-                       })            
-    };
-    //#endregion
+    const obtenerCiudadesXDpto = (idDpto) => {
+        if(idDpto === '') {
+            return null;
+        } else {
+            return ciudades.filter(c => c.id_departamento == idDpto);
+        }
+    }
 
     //#region Handlers
     const handlerEnvio = async (e) => {
@@ -182,19 +159,19 @@ const FormularioEnvio = () => {
     const handleChangeSelectOrigen = async (e) => {
         setBanderaCiudadesOrigen(false);
         const idDptoOrigen = e.target.value;
-        const ciudades = await obtenerCiudadDesdeAPI(idDptoOrigen);
-        dispatch( {type: 'CargarCiudadesOrigen', payload: ciudades} );
+        const respuestaCiudOrig = obtenerCiudadesXDpto(idDptoOrigen);
+        setCiudadesOrigen(respuestaCiudOrig);
         setBanderaCiudadesOrigen(true);
     }
     const handleChangeSelectDestino = async (e) => {
         setBanderaCiudadesDestino(false);
         const idDptoDestino = e.target.value;
-        const ciudades = await obtenerCiudadDesdeAPI(idDptoDestino);
-        dispatch( {type: 'CargarCiudadesDestino', payload: ciudades} );
+        const respuestaCiudDest = obtenerCiudadesXDpto(idDptoDestino);
+        setCiudadesDestino(respuestaCiudDest);
         setBanderaCiudadesDestino(true);
     }
     
-    const handlerCalculadora = (e) => {
+    const calculadora = (e) => {
         e.preventDefault();
 
         if(!validarCiudadesVacias()) {
@@ -221,8 +198,8 @@ const FormularioEnvio = () => {
           <Form className='col-10 col-md-6 col-lg-4 mt-4'>
               <Form.Group >
                       {/* Select de departamentos */}
-                  <Form.Select onChange={handleChangeSelectOrigen} className="select mb-2" defaultValue="" required={true}  >
-                      <option required={true} value="" disabled={true}>Departamento de origen</option>   
+                  <Form.Select onChange={handleChangeSelectOrigen} className="select mb-2" defaultValue="">
+                      <option value="" disabled={true}>Departamento de origen</option>   
                       {departamentos.map((dptoO) => (
                           <option required={true}  key={dptoO.id} value={dptoO.id}> {dptoO.nombre} </option>
                       ))} 
@@ -232,7 +209,7 @@ const FormularioEnvio = () => {
                       { banderaCiudadesOrigen ?                
                       <Form.Select ref={ciudadOrigenRef} className="select mb-4 w-50 mb-5" defaultValue="" >
                           <option value="" disabled={true}>Ciudad de origen</option>
-                          {reduceCiudadesOrigen.ciudades.map((ciuO) => (
+                          {ciudadesOrigen.map((ciuO) => (
                               <option key={ciuO.id} value={ciuO.id}> {ciuO.nombre} </option>
                           ))}
                       </Form.Select>
@@ -251,7 +228,7 @@ const FormularioEnvio = () => {
                       { banderaCiudadesDestino ?                
                       <Form.Select ref={ciudadDestinoRef} className="select mb-4 w-50 mb-5" defaultValue="" >
                           <option value="" disabled={true}>Ciudad de destino</option>   
-                          {reduceCiudadesDestino.ciudades.map((ciuD) => (
+                          {ciudadesDestino.map((ciuD) => (
                               <option key={ciuD.id} value={ciuD.id}> {ciuD.nombre} </option>
                           ))}
                       </Form.Select>
@@ -273,7 +250,7 @@ const FormularioEnvio = () => {
               <Button onClick={ handlerEnvio } className='rounded mt-4 py-1' id="btnAgregarEnvio" type="submit">
                   Agregar envío
               </Button>
-              <Button onClick={ handlerCalculadora } variant="info" className='rounded mt-4 py-1 px-1' id="btnCalcularDistancia" type="submit">
+              <Button onClick={ calculadora } variant="info" className='rounded mt-4 py-1 px-1' id="btnCalcularDistancia" type="submit">
                   Calcular distancia
               </Button>
           </Form>
