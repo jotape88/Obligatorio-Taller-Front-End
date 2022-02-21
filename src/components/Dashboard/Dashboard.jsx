@@ -157,8 +157,8 @@ const Dashboard = () => {
                               <NavLink className='navLinks mx-3' to="/formEnvios/">Agregar Envio</NavLink>
                               <NavLink className='navLinks mx-3' to="/listEnvios/">Listar envíos</NavLink>
                               <NavLink className='navLinks mx-3' to="/topEnvios/">Top 5 Departamentos</NavLink>
-                              <NavLink className='navLinks mx-3' to="/xxx/xxx">Envíos por ciudad</NavLink>
-                              <NavLink className='navLinks mx-3' to="/xxx/xxx">Envíos por categoría</NavLink>
+                              <NavLink className='navLinks mx-3' to="/grafEnvXCiud/">Envíos por ciudad</NavLink>
+                              <NavLink className='navLinks mx-3' to="/grafEnvXCateg/">Envíos por categoría</NavLink>
                           </Nav>
                       </Container>
                     </Navbar>

@@ -18,40 +18,13 @@ import FormularioEnvio from './components/FormularioEnvio/FormularioEnvio';
 import ListaEnvios from './components/ListaEnvios/ListaEnvios';
 import GastoTotal from './components/GastoTotal/GastoTotal';
 import Header from './components/Header/Header';
+import GraficoEnvXCiudad from './components/GraficoEnvXCiudad/GraficoEnvXCiudad';
+import GraficoEnvXCateg from './components/GraficoEnvXCateg/GraficoEnvXCateg';
 
 
 const App = () => {
-
-  const [isLogin, setIsLogin] = useState(false);	 //Para el login
-
-  //let usuarioLogeado = useSelector((state) => state.reducerIngresoRegistro); 
   let usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
 
-  // useEffect(() => {
-  //   console.log(`useEffect ON:`, usuarioLogeado); //Cuando cambia contador1, se ejecuta el useEffect
-  // }, []);
- 
-
-  // if(usuarioLogeado){
-  //   setIsLogin(true);
-  // }
-
-  // useEffect(() => {
-  //   setInterval(() => console.log(`contador`, contador), 1000);
-  // }, []);
- 
-
-  // if(!isLogin){ //Verificamos que el usuario no este logueado, si no lo esta, lo redirigimos al login
-  //   return (
-  //     <div className="App">
-  //       <Provider store={store}>
-  //         <Header></Header>
-  //           <IngresoRegistro></IngresoRegistro>
-  //         <Footer></Footer>
-  //       </Provider>
-  //     </div>
-  //   )         
-  // } else {
     return (
       <Container>      
         <Row className='text-center'>        
@@ -60,16 +33,15 @@ const App = () => {
               <Routes>  
                
                   <Route path="/login" element={ <IngresoRegistro/> } />
-                  {/* <Route path="/gastoTotal" element={ <GastoTotal /> } /> */}
-
                   <Route path="/" element={ <Dashboard /> }>
                       <Route index element={ <Home />} /> 
                       <Route path="formEnvios" element={ <FormularioEnvio/> } />
                       <Route path="listEnvios" element={ <ListaEnvios/> } />
                       <Route path="topEnvios" element={ <ListaTopDptos/> } />
+                      <Route path="grafEnvXCiud" element={ <GraficoEnvXCiudad/> } />
+                      <Route path="grafEnvXCateg" element={ <GraficoEnvXCateg/> } />
                       
-                     </Route>
-                  
+                     </Route>           
                      <Route path="*" element={ <NotFound/> } />
                   
               </Routes>
