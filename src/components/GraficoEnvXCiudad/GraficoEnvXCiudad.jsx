@@ -1,5 +1,4 @@
 import React from 'react'
-import Chart from 'react-apexcharts'
 import { useSelector } from "react-redux";
 import Grafica from "../Grafica/Grafica";
 

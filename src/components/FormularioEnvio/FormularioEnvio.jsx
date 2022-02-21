@@ -1,21 +1,23 @@
 import { Form, Button, Alert } from 'react-bootstrap';
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate  } from 'react-router-dom';
 import getDistance from 'geolib/es/getDistance'; //Libreria para calcular la distancia entre dos puntos
-import Imagen from '../../img/loading.gif'
 
 const FormularioEnvio = () => {
     //#region Hooks y variables
     const usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
-    const reduceDptos = useSelector((state) => state.reducerDptos);
-    const departamentos = reduceDptos[0].departamentos;
+    const departamentos = useSelector((state) => state.reducerDptos);
+    const categorias = useSelector((state) => state.reducerCategs);
+    const ciudades = useSelector((state) => state.reducerCiudades);
+
+
     const reduceCiudadesOrigen = useSelector((state) => state.reducerCdsOrig);
     const reduceCiudadesDestino = useSelector((state) => state.reducerCdsDes);
-    const reduceCates = useSelector((state) => state.reducerCategs);
-    const categorias = reduceCates[0].categorias;
+
     const [banderaCiudadesOrigen, setBanderaCiudadesOrigen] = useState();
     const [banderaCiudadesDestino, setBanderaCiudadesDestino] = useState();
+
     const [mensajes, setMensajes] = useState('');
     const ciudadOrigenRef = useRef(null);
     const ciudadDestinoRef = useRef(null);
@@ -36,25 +38,22 @@ const FormularioEnvio = () => {
         return distancia >= 100 ? precioBase + (peso * precioXKilo) + recargoPorDistancia  : precioBase + (peso * precioXKilo); 
     }
 
-    const traerCiudadXIdDesdeReduce = (idCiudad) => {
-        let ciudad = null;
-        if(reduceCiudadesOrigen.ciudades.find(c => c.id === parseInt(idCiudad))) {
-            ciudad = reduceCiudadesOrigen.ciudades.find(c => c.id === parseInt(idCiudad));
-            return ciudad;
-        }
-        if(reduceCiudadesDestino.ciudades.find(c => c.id === parseInt(idCiudad))) {
-            ciudad = reduceCiudadesDestino.ciudades.find(c => c.id === parseInt(idCiudad));
-            return ciudad;
-        }
-        return ciudad;
-    }
-    
+
     const calcularDistanciaEntreCiudades = (latOrigen, lonOrigen, latDestino, lonDestino) => {
         const distancia = getDistance(
             { latitude: latOrigen, longitude: lonOrigen },
             { latitude: latDestino, longitude: lonDestino });
         return  (distancia / 1000).toFixed(2); //Guardamos la distancia solo hasta dos decimales
 
+    }
+
+    const traerCiudadXIdDesdeReduce = (idCiudad) => {
+        let ciudad = null;
+        if(ciudades.find(c => c.id === parseInt(idCiudad))) {
+            ciudad = ciudades.find(c => c.id === parseInt(idCiudad));
+            return ciudad;
+        }
+        return ciudad;
     }
     //#endregion
 
@@ -79,8 +78,15 @@ const FormularioEnvio = () => {
     //#endregion
     
 
+    //hacer un metodo para obtener la ciudad mediante el departamento
+    // const obtenerCiudades = (idDpto) => {
+    //     if(idDpto === '') {
+    //         ciudades.map(c => c.idDpto === null);
+
+
+
     //#region Llamadas a la API
-    const cargarCiudadesAPI = async (idDpto) => {
+    const obtenerCiudadDesdeAPI = async (idDpto) => {
         const myHeaders = new Headers();
         myHeaders.append("apikey", usuarioLogueado.apiKey);
         myHeaders.append("Content-Type", "application/json");
@@ -117,6 +123,8 @@ const FormularioEnvio = () => {
 
         const ciudadOrigenObjeto = traerCiudadXIdDesdeReduce(ciudadOrigenRef.current.value); //A traves del id de la ciudad que obtenemos del useRef, se obtiene el objeto completo
         const ciudadDestinoObjeto = traerCiudadXIdDesdeReduce(ciudadDestinoRef.current.value);
+
+        
 
         const latOrigen =  ciudadOrigenObjeto.latitud;
         const lonOrigen = ciudadOrigenObjeto.longitud;
@@ -156,8 +164,9 @@ const FormularioEnvio = () => {
                     setMensajes(`Envío del usuario: "${usuarioLogueado.nombre}" agendado con éxito, 
                                  Monto total: $${precioTotal}, 
                                  Identificador de envío: ${result.idEnvio}`);
-                    let objetoAlStore = {
-                        id: usuarioLogueado.idUsuario,
+
+                    let objetoAlStore = { //Objeto conteniendo el envio que se guardara en el store
+                        id: result.idEnvio, //usamos la id que nos revuelve la respuesta de la api
                         ciudad_origen: ciudadOrigenObjeto.id,
                         ciudad_destino: ciudadDestinoObjeto.id,
                         peso: parseInt(pesoPaqueteRef.current.value),
@@ -173,14 +182,14 @@ const FormularioEnvio = () => {
     const handleChangeSelectOrigen = async (e) => {
         setBanderaCiudadesOrigen(false);
         const idDptoOrigen = e.target.value;
-        const ciudades = await cargarCiudadesAPI(idDptoOrigen);
+        const ciudades = await obtenerCiudadDesdeAPI(idDptoOrigen);
         dispatch( {type: 'CargarCiudadesOrigen', payload: ciudades} );
         setBanderaCiudadesOrigen(true);
     }
     const handleChangeSelectDestino = async (e) => {
         setBanderaCiudadesDestino(false);
         const idDptoDestino = e.target.value;
-        const ciudades = await cargarCiudadesAPI(idDptoDestino);
+        const ciudades = await obtenerCiudadDesdeAPI(idDptoDestino);
         dispatch( {type: 'CargarCiudadesDestino', payload: ciudades} );
         setBanderaCiudadesDestino(true);
     }

@@ -1,12 +1,11 @@
-const estadoInicial = "";
+// const estadoInicial = "";
 
-const reducerCdsOrig = (state = estadoInicial, action) => {
-    switch (action.type) {
-        case 'CargarCiudadesOrigen':
-                return action.payload;
-        default:
-            return state;
-    }
-};
+// const reducerCdsOrig = (state = estadoInicial, action) => {
+//     switch (action.type) {
 
-export default reducerCdsOrig;
+//         default:
+//             return state;
+//     }
+// };
+
+// export default reducerCdsOrig;

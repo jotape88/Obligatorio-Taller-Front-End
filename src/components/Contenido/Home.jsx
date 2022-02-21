@@ -1,9 +1,5 @@
 import React from 'react'
 import Imagen from '../../img/fondoHome.jpg'
-import { NavLink } from 'react-router-dom'
-import { useNavigate, Link } from "react-router-dom";
-import { Nav, Container } from "react-bootstrap";
-import { Form, Button, Alert, Navbar } from 'react-bootstrap';
 
 const Home = () => {
     return (

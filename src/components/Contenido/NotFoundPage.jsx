@@ -1,6 +1,6 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import Imagen from '../../img/errorSistema.jpg'
+import { NavLink } from 'react-router-dom';
 
 
 const NotFoundPage = () => {
@@ -10,7 +10,7 @@ const NotFoundPage = () => {
             <figure className='imagenHome mt-5'>
                 <img className='img-fluid' src={Imagen} alt="imagen de una cadena de una warehouse con trabajadores" title='Foto de un warehouse'/>
             </figure>      
-            {/* <h3 className='mb-3'>Ir al <NavLink className='loginTxt' to="/Login">login</NavLink></h3> */}
+            <h3 className='mb-3'>Volver <NavLink className='loginText' to="/">dashboard</NavLink></h3>
         </section>
   )
 }

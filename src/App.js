@@ -41,8 +41,9 @@ const App = () => {
                       <Route path="grafEnvXCiud" element={ <GraficoEnvXCiudad/> } />
                       <Route path="grafEnvXCateg" element={ <GraficoEnvXCateg/> } />
                       
+                      <Route path="*" element={ <NotFound/> } />
                      </Route>           
-                     <Route path="*" element={ <NotFound/> } />
+                     
                   
               </Routes>
 

@@ -121,12 +121,11 @@ footer{
 /* DESLOGUEO */
 #log-out{
     position: relative;
-    text-align: end;
-    right: -16rem;
+    text-align: center;
+    right: -52rem;
     top: -6rem; 
-}
-
-#log-out a{
+    height: 40px;
+    width: 8rem;
     background-color: rgb(80, 99, 148); /* Green */
     border: none;
     color: white;
@@ -136,8 +135,9 @@ footer{
     box-shadow: 5px 4px 10px rgba(12, 1, 1, 0.3);
     transition: all 0.8s;
 }
-#log-out a:hover{
-    background-color: rgb(49,75,137) /* Green */
+#log-out:hover{
+    background-color: rgb(49,75,137);
+    color:black;
 }
 
 #cargando{

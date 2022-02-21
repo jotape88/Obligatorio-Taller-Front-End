@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from "react-redux";
-// import Home from '../Contenido/Home';
 import ImagenCarga from '../../img/loading.gif'
-import ImagenTrabajadores from '../../img/fondoHome.jpg'
 import GastoTotal from '../GastoTotal/GastoTotal';
 
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
@@ -21,12 +19,17 @@ const Dashboard = () => {
   //#region Hooks
   const cargarAlDispatch = async () => {
     try{
-      let categorias = await obtenerCategoriasAPI();
-      let departamentos = await cargarDptosAPI();
+      let c = await obtenerCategoriasAPI();
+      let categorias = c.categorias;
+
+      let d = await cargarDptosAPI();
+      let departamentos = d.departamentos;
+
       let e = await cargarEnviosAPI();
       let envios = e.envios;
       
-      let ciudades = await obtenerCiudadesAPI();
+      let ci = await obtenerCiudadesAPI();
+      let ciudades = ci.ciudades;
 
       dispatch( {type: 'CargarCategorias', payload: categorias} );
       dispatch( {type: 'CargarDepartamentos', payload: departamentos} );
@@ -50,6 +53,12 @@ const Dashboard = () => {
       alert("Hubo un error en la carga de datos");
     }
   }, []);
+
+  const handleLogOut = () => {
+    sessionStorage.clear(); 
+    navigate('/login');
+  }
+
   //#endregion
 
   //#region Llamadas a la API
@@ -118,7 +127,7 @@ const Dashboard = () => {
    
     };
 
-  const obtenerCiudadesAPI = async (id) => {
+  const obtenerCiudadesAPI = async () => {
     let myHeaders = new Headers();
     myHeaders.append("apikey", usuarioLogeado.apiKey);
     myHeaders.append("Content-Type", "application/json");
@@ -167,16 +176,16 @@ const Dashboard = () => {
                       <p>{usuarioLogeado.nombre}</p>
                     </div>
                     <GastoTotal></GastoTotal>
-                    <div id="log-out">
-                      <a href="/Login">Logout</a>
-                    </div>    
+                    <Button onClick={ handleLogOut } id='log-out' >
+                      Logout
+                    </Button>
                     <Outlet className='me-auto'></Outlet>
                   </div>
-            );
-    } else {  
-      return (
-        <div id="cargando"><p>Cargando...</p> <img src={ImagenCarga} alt="imagen de carga" /></div> 
-      )
+          );
+        }else {  
+          return (
+            <div id="cargando"><p>Cargando...</p> <img src={ImagenCarga} alt="imagen de carga" /></div> 
+          )
     }
   }
 

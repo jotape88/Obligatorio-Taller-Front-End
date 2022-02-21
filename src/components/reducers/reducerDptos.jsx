@@ -3,7 +3,7 @@ const estadoInicial = '';
 const reducerDptos = (state = estadoInicial, action) => {
     switch (action.type) {
         case 'CargarDepartamentos':
-            return [...state, action.payload];
+            return action.payload;
         default:
             return state;
     }

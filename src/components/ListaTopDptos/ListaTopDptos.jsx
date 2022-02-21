@@ -1,29 +1,18 @@
-import { Form, Button, Alert, Card, Table } from 'react-bootstrap';
-import { useRef, useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import getDistance from 'geolib/es/getDistance'; //Libreria para calcular la distancia entre dos puntos
-import Imagen from '../../img/loading.gif'
+import { Table } from 'react-bootstrap';
+import { useSelector } from "react-redux";
 
 const ListaTopDptos = () => {
     //#region Variables y Hooks
-    const usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
-    const [mensajes, setMensajes] = useState('');
-    const [banderaLlamadasAPI, setBanderaLlamadasAPI] = useState();
-    const usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
-
     const reduceEnvios = useSelector((state) => state.reducerEnvios);
-    const reducerCiudades = useSelector((state) => state.reducerCiudades.ciudades);
+    const reducerCiudades = useSelector((state) => state.reducerCiudades);
+    const reducerDepartamentos = useSelector((state) => state.reducerDptos);
 
-    const reduceDptos = useSelector((state) => state.reducerDptos);
-    const departamentos = reduceDptos[0].departamentos;
-
-    const dispatch = useDispatch();
     let topDepartamentos = [];
 
     //Metodo para obtener el nombre del departamento a traves del id del mismo
     const obtenerNombreDepartamento = (id) => {
         let nombreDepartamento = '';
-        departamentos.forEach(departamento => {
+        reducerDepartamentos.forEach(departamento => {
             if (departamento.id === id) {
                 nombreDepartamento = departamento.nombre;
             }

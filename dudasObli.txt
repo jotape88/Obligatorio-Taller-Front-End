@@ -1,4 +1,5 @@
 DUDAS:
 
--la api no deveulve mas el mensaje de que hay error de usuario contrasenia
-
+-esta bien no tener un componente calculadora?
+-keys repetidas cuando listamos los envios
+-404 renderiza todo de nuevo

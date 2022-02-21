@@ -3,7 +3,7 @@ const estadoInicial = '';
 const reducerCategs = (state = estadoInicial, action) => {
     switch (action.type) {
         case 'CargarCategorias':
-            return [...state, action.payload];
+            return action.payload;
         default:
             return state;
     }
