@@ -5,7 +5,7 @@ import Grafica from "../Grafica/Grafica";
 const GraficoEnvXCiudad = () => {
 
   const reduceEnvios = useSelector((state) => state.reducerEnvios);
-  const datos = []
+  const datos = [];
 
   const obtenerOrdenados = () => {
     const mapaEnvios = new Map();

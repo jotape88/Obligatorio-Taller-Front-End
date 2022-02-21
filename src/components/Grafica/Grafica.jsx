@@ -9,12 +9,12 @@ const Grafica = ({ datos, categorias, ciudades }) => {
           id: "apexchart-example",
         },
         xaxis: {
-          categories: categorias,
+          categories: ciudades,
         },
       },
       series: [
         {
-          name: ciudades,
+          name: categorias,
           data: datos,
         },
       ],
