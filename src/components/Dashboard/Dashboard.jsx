@@ -12,7 +12,6 @@ import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   //#region Variables
-  console.log(`Se renderiza el componente Dashboard`)
   const usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
   const [banderaLlamadasAPI, setBanderaLlamadasAPI] = useState();
   const dispatch = useDispatch();
@@ -21,15 +20,22 @@ const Dashboard = () => {
 
   //#region Hooks
   const cargarAlDispatch = async () => {
-    let categorias = await obtenerCategoriasAPI();
-    let departamentos = await cargarDptosAPI();
-    let envios = await cargarEnviosAPI();
-    let ciudades = await obtenerCiudadesAPI();
+    try{
+      let categorias = await obtenerCategoriasAPI();
+      let departamentos = await cargarDptosAPI();
+      let e = await cargarEnviosAPI();
+      let envios = e.envios;
+      
+      let ciudades = await obtenerCiudadesAPI();
 
-    dispatch( {type: 'CargarCategorias', payload: categorias} );
-    dispatch( {type: 'CargarDepartamentos', payload: departamentos} );
-    dispatch( {type: 'CargarEnvio', payload: envios} );
-    dispatch( {type: 'CargarCiudades', payload: ciudades} );
+      dispatch( {type: 'CargarCategorias', payload: categorias} );
+      dispatch( {type: 'CargarDepartamentos', payload: departamentos} );
+      dispatch( {type: 'CargarEnvio', payload: envios} );
+      dispatch( {type: 'CargarCiudades', payload: ciudades} );
+    }
+    catch(error){
+      console.log(`Advertencia: `, error); //Cuando cargue por primera vez la app, esta advertencia siempre va a aparecer, ya que no hay datos en el sessionStorage
+    }
   }
   
   useEffect(() => {
@@ -43,7 +49,6 @@ const Dashboard = () => {
     catch (error) {
       alert("Hubo un error en la carga de datos");
     }
-
   }, []);
   //#endregion
 
@@ -137,24 +142,25 @@ const Dashboard = () => {
   //#endregion
 
   //#region Renderizado
-
   if(usuarioLogeado == null){
+    console.log('No hay usuario logeado, redirigiendo al login');
     return <Navigate replace to={"/login"} />
   } else {
+        console.log(`Usuario logeado, renderizando la dashboard`);
         if(banderaLlamadasAPI === true){
           return (
-                  <div className='row justify-content-center'>
+                  <div id="sectionDashboard" className='row justify-content-center me-auto'>
                     <Navbar>
-                    <Container className="justify-content-center">
-                        <Nav className="">
-                            <NavLink className='navLinks mx-3' to="/">Inicio</NavLink>
-                            <NavLink className='navLinks mx-3' to="/formularioEnvio/formularioEnvio">Agregar Envio</NavLink>
-                            <NavLink className='navLinks mx-3' to="/listaEnvios/listaEnvios">Listar envíos</NavLink>
-                            <NavLink className='navLinks mx-3' to="/listaTopDptos/listaTopDptos">Top 5 Departamentos</NavLink>
-                            {/* <NavLink className='navLinks mx-3' to="/xxx/xxx">Graficar envíos por ciudad</NavLink>
-                            <NavLink className='navLinks mx-3' to="/xxx/xxx">Graficar envíos por categoría</NavLink> */}
-                        </Nav>
-                    </Container>
+                      <Container className="justify-content-center">
+                          <Nav>
+                              <NavLink className='navLinks mx-3' to="/">Inicio</NavLink>
+                              <NavLink className='navLinks mx-3' to="/formEnvios/">Agregar Envio</NavLink>
+                              <NavLink className='navLinks mx-3' to="/listEnvios/">Listar envíos</NavLink>
+                              <NavLink className='navLinks mx-3' to="/topEnvios/">Top 5 Departamentos</NavLink>
+                              <NavLink className='navLinks mx-3' to="/xxx/xxx">Envíos por ciudad</NavLink>
+                              <NavLink className='navLinks mx-3' to="/xxx/xxx">Envíos por categoría</NavLink>
+                          </Nav>
+                      </Container>
                     </Navbar>
                     <div id="user-info">
                       <p>Usuario</p>
@@ -164,11 +170,7 @@ const Dashboard = () => {
                     <div id="log-out">
                       <a href="/Login">Logout</a>
                     </div>    
-                    <figure className='imagenHome'>
-                      <figcaption><h2 className='mb-5'>Por favor elija una opción en el menu superior</h2></figcaption>
-                      <img className='img-fluid' src={ImagenTrabajadores} alt="imagen de una cadena de una warehouse con trabajadores" title='Foto de un warehouse'/>
-                    </figure>
-                    <Outlet></Outlet>
+                    <Outlet className='me-auto'></Outlet>
                   </div>
             );
     } else {  
@@ -178,19 +180,6 @@ const Dashboard = () => {
     }
   }
 
-    // return (
-    //   console.log(`Se renderiza el return del Dashboard`),
-    //   <section>
-
-    //     {/* { banderaLlamadasAPI ? <Home /> :   }
-    // //  */}
-
-    //       {/* { banderaLlamadasAPI ? <ListaEnvios /> :  ""} 
-    //       { banderaLlamadasAPI ? <GastoTotal /> :  ""}  
-    //       { banderaLlamadasAPI ? <ListaTopDptos /> :  ""}  */}
-                    
-    //   </section>
-    // ) 
 }
 
 //#endregion

@@ -5,24 +5,15 @@ import getDistance from 'geolib/es/getDistance'; //Libreria para calcular la dis
 import Imagen from '../../img/loading.gif'
 
 const ListaEnvios = () => {
-    console.log("Se renderiza el Componente listEnvios");
     //#region Variables y Hooks
     const usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
-    const [mensajes, setMensajes] = useState('');
-    const [banderaLlamadasAPI, setBanderaLlamadasAPI] = useState();
     const dispatch = useDispatch();
-    const reduceEnvios = useSelector((state) => state.reducerEnvios[0]);
+    const reduceEnvios = useSelector((state) => state.reducerEnvios);
     const reduceCiudades = useSelector((state) => state.reducerCiudades.ciudades);
-    console.log(`Los envios son`, reduceEnvios, reduceCiudades);
-    console.log(`Las ciudades son REDUCER: `, reduceCiudades);
-    console.log(`Los envios del REDUCER: `, reduceEnvios);
-    //#endregion
 
     //#region Metodos
     const obtenerNombreDeCiudadXId = (idCiudad) => {
-      console.log(`Se renderiza el obtenerNombredeCiudad con el id ${idCiudad}`);
       const nombreCiudad = reduceCiudades.find(ciudad => ciudad.id == idCiudad);
-      console.log(`El nombre de ciudad es: ` + nombreCiudad.nombre);
       return nombreCiudad.nombre;
     }
     //#endregion
@@ -56,17 +47,15 @@ const ListaEnvios = () => {
 
     //#region handlers
     const handlerEliminarEnviopXId = async (e, id) => {
-      console.log(`Lo que recibe el handlerEliminarEnvioXID es: ${id} y el evento es: ${e}`);
       e.preventDefault();
       await eliminarEnvio(id);
       dispatch({ type: 'EliminarEnvio', payload: id });
-      setBanderaLlamadasAPI(true);
+      // setBanderaLlamadasAPI(true);
     }
     //#endregion
 
     //#region Renderizado
     return (
-        console.log(`Se renderiza el return ListaEnvios`),
         <section className='row justify-content-center'>
 
           <h2 className='col-6 mt-5'>Lista de envíos</h2>
@@ -81,7 +70,7 @@ const ListaEnvios = () => {
                   </tr>
                 </thead>
                 <tbody>
-              {reduceEnvios.envios.map((e) => (
+              {reduceEnvios.map((e) => (
                   <tr key={e.id}>
                     <td>{obtenerNombreDeCiudadXId(e.ciudad_origen)}</td>
                     <td>{obtenerNombreDeCiudadXId(e.ciudad_destino)}</td>

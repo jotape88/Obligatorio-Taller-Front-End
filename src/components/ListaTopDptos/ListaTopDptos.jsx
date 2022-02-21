@@ -5,27 +5,19 @@ import getDistance from 'geolib/es/getDistance'; //Libreria para calcular la dis
 import Imagen from '../../img/loading.gif'
 
 const ListaTopDptos = () => {
-    console.log("Se renderiza el Componente listEnvios");
     //#region Variables y Hooks
     const usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
     const [mensajes, setMensajes] = useState('');
     const [banderaLlamadasAPI, setBanderaLlamadasAPI] = useState();
-    const dispatch = useDispatch();
     const usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
 
-    const reduceE = useSelector((state) => state.reducerEnvios[0]);
-    const reduceEnvios = reduceE.envios;
-
+    const reduceEnvios = useSelector((state) => state.reducerEnvios);
     const reducerCiudades = useSelector((state) => state.reducerCiudades.ciudades);
-
-    console.log(`Las ciudades del reducerciud son`, reduceEnvios, reducerCiudades)
 
     const reduceDptos = useSelector((state) => state.reducerDptos);
     const departamentos = reduceDptos[0].departamentos;
-    // console.log("los departamentos son", departamentos);
 
-    // const [topDepartamentos, setTopDepartamentos] = useState([]);
-
+    const dispatch = useDispatch();
     let topDepartamentos = [];
 
     //Metodo para obtener el nombre del departamento a traves del id del mismo
@@ -39,7 +31,6 @@ const ListaTopDptos = () => {
         return nombreDepartamento;
     }
 
-    
     //Recorremos reduceEnvios y comparamos ciudad_destino con el id de la ciudad en el reducer de ciudades
     //Guardamos en un array los departamentos que aparecen en ambas listas junto con la cantidad de veces que se repite
     const topDptos = () => {
@@ -70,13 +61,9 @@ const ListaTopDptos = () => {
     //Ordenamos de mayor a menor por la cantidad de veces que se repite
     topDepartamentos.sort((a, b) => b.cantidad - a.cantidad);
     
-    console.log(topDepartamentos);
-
     //#region Renderizado
     return (
-        console.log(`Se renderiza el return ListTopDptos`),
         <section className='row justify-content-center'>
-
           <h2 className='col-6 mt-5'>Top 5 Departamentos con mas envíos</h2>
               <Table className='col-6 striped bordered hover mt-3 w-75'>
                 <thead>

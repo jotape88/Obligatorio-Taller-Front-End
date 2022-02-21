@@ -6,11 +6,10 @@ import Imagen from '../../img/loading.gif'
 
 const ListaEnvios = () => {
     //#region Variables y Hooks
-    console.log("Se renderiza el Componente GastoTotal");
     const usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
     const [mensajes, setMensajes] = useState('');
     const [banderaLlamadasAPI, setBanderaLlamadasAPI] = useState();
-    const reduceEnvios = useSelector((state) => state.reducerEnvios[0]);
+    const reduceEnvios = useSelector((state) => state.reducerEnvios);
     const reduceCiudades = useSelector((state) => state.reducerCiudades.ciudades);
     const dispatch = useDispatch();
     let costoTotal = 0
@@ -18,7 +17,7 @@ const ListaEnvios = () => {
 
     //#region Metodos
     const calcularTotalDeEnvios = () => {
-        reduceEnvios.envios.forEach(envio => {
+        reduceEnvios.forEach(envio => {
             costoTotal += envio.precio;
         });
 

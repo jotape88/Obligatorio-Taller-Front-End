@@ -1,4 +1,3 @@
-import React from 'react'
 import { combineReducers } from 'redux';
 import reducerDptos from './reducerDptos';
 import reducerCategs from './reducerCategs';
@@ -15,6 +14,5 @@ const reducer = combineReducers ({
   reducerEnvios: reducerEnvios,
   reducerCiudades: reducerCiudades,
 });
-
 
 export default reducer

@@ -5,7 +5,7 @@ import IngresoRegistro from './components/IngresoRegistro/IngresoRegistro';
 import Footer from './components/Footer/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
 import NotFound from './components/Contenido/NotFoundPage';
-// import Home from './components/Contenido/Home';
+import Home from './components/Contenido/Home';
 import ListaTopDptos from './components/ListaTopDptos/ListaTopDptos';
 
 import { BrowserRouter, Routes, Route} from "react-router-dom";
@@ -63,16 +63,14 @@ const App = () => {
                   {/* <Route path="/gastoTotal" element={ <GastoTotal /> } /> */}
 
                   <Route path="/" element={ <Dashboard /> }>
-                     {/* <Route index element={ <Home />} />  */}
-                      {/* <Route path="envios" element={ <FormularioEnvio/> } /> */}
-
+                      <Route index element={ <Home />} /> 
+                      <Route path="formEnvios" element={ <FormularioEnvio/> } />
+                      <Route path="listEnvios" element={ <ListaEnvios/> } />
+                      <Route path="topEnvios" element={ <ListaTopDptos/> } />
                       
                      </Route>
                   
-                  <Route path="formularioEnvio/formularioEnvio" element={ <FormularioEnvio/> } />
-                  <Route path="listaEnvios/listaEnvios" element={ <ListaEnvios/> } />
-                  <Route path="listaTopDptos/listaTopDptos" element={ <ListaTopDptos/> } />
-                  <Route path="*" element={ <NotFound/> } />
+                     <Route path="*" element={ <NotFound/> } />
                   
               </Routes>
 

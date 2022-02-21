@@ -1,5 +1,3 @@
-import React from 'react'
-
 const estadoInicial = "";
 
 const reducerCiudades = (state = estadoInicial, action) => {

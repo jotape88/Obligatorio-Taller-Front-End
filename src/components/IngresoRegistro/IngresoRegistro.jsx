@@ -6,7 +6,6 @@ import { useNavigate  } from 'react-router-dom';
 
 const IngresoRegistro = () => {
     //#region Variables y hooks
-    console.log("Se renderiza el componente IngresoRegistro");
     sessionStorage.clear(); //Limpiamos los datos de sesion cada vez que redirigimos al login (por ej, cuando hacemos logout desde el boton del header)
     const refInputUsuario = useRef();
     const refInputContrasenia = useRef();
@@ -95,8 +94,6 @@ const IngresoRegistro = () => {
     //#endregion
 
     //#region [Renderizado]
-    console.log("Se renderiza el return de IngresoRegistro");
-
     return (
         <section id="sectionFormularioRegistro" className='row justify-content-center'>
            <Form className='col-10 col-md-6 col-lg-4 col-xl-4 mt-5'>

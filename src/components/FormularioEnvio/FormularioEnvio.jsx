@@ -1,15 +1,14 @@
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate  } from 'react-router-dom';
 import getDistance from 'geolib/es/getDistance'; //Libreria para calcular la distancia entre dos puntos
 import Imagen from '../../img/loading.gif'
 
 const FormularioEnvio = () => {
-    console.log(`Se renderiza el componente FomrularioEnvio`)
     //#region Hooks y variables
     const usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
     const reduceDptos = useSelector((state) => state.reducerDptos);
-    console.log(`El contenido de reduce dptos`, reduceDptos);
     const departamentos = reduceDptos[0].departamentos;
     const reduceCiudadesOrigen = useSelector((state) => state.reducerCdsOrig);
     const reduceCiudadesDestino = useSelector((state) => state.reducerCdsDes);
@@ -23,6 +22,9 @@ const FormularioEnvio = () => {
     const catPaqueteRef = useRef(null);
     const pesoPaqueteRef = useRef(null);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+
     //#endregion
    
     //#region Metodos
@@ -153,7 +155,17 @@ const FormularioEnvio = () => {
                 } else {
                     setMensajes(`Envío del usuario: "${usuarioLogueado.nombre}" agendado con éxito, 
                                  Monto total: $${precioTotal}, 
-                                 Identificador de envío: ${result.idEnvio}`,);
+                                 Identificador de envío: ${result.idEnvio}`);
+                    let objetoAlStore = {
+                        id: usuarioLogueado.idUsuario,
+                        ciudad_origen: ciudadOrigenObjeto.id,
+                        ciudad_destino: ciudadDestinoObjeto.id,
+                        peso: parseInt(pesoPaqueteRef.current.value),
+                        distancia: parseInt(distanciaEnKms),
+                        precio: precioTotal,
+                        categoria: catPaqueteRef.current.value,
+                    }
+                    dispatch( {type: 'AgregarEnvio', payload: objetoAlStore} );
                 }
             });
     }
@@ -195,11 +207,8 @@ const FormularioEnvio = () => {
 
     //#region Renderizado
     return (
-      console.log('Se renderiza el formulario envio'),
       <section className='row justify-content-center'>
-
           <h2>Agregar un envío</h2>
-
           <Form className='col-10 col-md-6 col-lg-4 mt-4'>
               <Form.Group >
                       {/* Select de departamentos */}

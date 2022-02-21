@@ -1,5 +1,3 @@
-import React from 'react'
-
 const estadoInicial = '';
 
 const reducerCategs = (state = estadoInicial, action) => {
