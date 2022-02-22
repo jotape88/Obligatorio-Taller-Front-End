@@ -5,6 +5,8 @@ import Grafica from "../Grafica/Grafica";
 const GraficoEnvXCiudad = () => {
 
   const reduceEnvios = useSelector((state) => state.reducerEnvios);
+  const reduceCiudades = useSelector((state) => state.reducerCiudades);
+
   const datos = [];
 
   const obtenerOrdenados = () => {
@@ -20,11 +22,10 @@ const GraficoEnvXCiudad = () => {
         mapaEnvios.set(idEnv, cantidad);
       }
     });
-    var mapDesc = new Map(
-      [...mapaEnvios.entries()].sort((a, b) => b[1] - a[1]) //1 representa la cantidad
-    );
-    let datos = Array.from(mapDesc.values());
-    let envios = Array.from(mapDesc.keys());
+
+
+    let datos = Array.from(mapaEnvios.values());
+    let envios = Array.from(mapaEnvios.keys());
     console.log(`datos,categorias`, datos, envios);
     return { envios, datos };
   };

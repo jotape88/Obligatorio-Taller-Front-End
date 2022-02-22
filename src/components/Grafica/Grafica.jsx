@@ -1,20 +1,20 @@
 import React from "react";
 import Chart from "react-apexcharts";
 
-const Grafica = ({ datos, categorias, ciudades }) => {
-    console.log(`Los datos que recibe la grafica son: `, datos, categorias, ciudades);
+const Grafica = ({ datos, categorias, nombreSeries = "" }) => {
+    console.log(`datos,categorias`, datos, categorias);
     const state = {
       options: {
         chart: {
           id: "apexchart-example",
         },
         xaxis: {
-          categories: ciudades,
+          categories: categorias,
         },
       },
       series: [
         {
-          name: categorias,
+          name: nombreSeries,
           data: datos,
         },
       ],

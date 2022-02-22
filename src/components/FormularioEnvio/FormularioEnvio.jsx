@@ -243,7 +243,7 @@ const FormularioEnvio = () => {
                   </Form.Select>
 
                   {/* Input de peso del paquete */}
-                  <Form.Control ref={pesoPaqueteRef}  className="input" type="number" min="0" step=".1" placeholder="Peso del paquete (en Kg.)" />       
+                  <Form.Control ref={pesoPaqueteRef}  className="input" type="number" min="0" placeholder="Peso del paquete (en Kg.)" />       
               </Form.Group>
 
               {/* Botones de envio */}
