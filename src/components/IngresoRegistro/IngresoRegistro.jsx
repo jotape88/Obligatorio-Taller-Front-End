@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Alert, Form } from "react-bootstrap";
+import { Alert, Form, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate  } from 'react-router-dom';
 // import {NavLink} from 'react-router-dom';
@@ -11,12 +11,18 @@ const IngresoRegistro = () => {
     const [mensajes, setMensajes] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [passwordShown, setPasswordShown] = useState(false); //Para mostrar/ocultar la contraseña
     //#endregion
 
-    //#region validaciones
+    //#region validaciones y metodos
     const validarDatos = (nom, pass) =>{ //validamos datos ingresados desde por el usuario desde el input del login/registro
         return true ? nom != '' && pass != '' : false; // Operador ternario para verificar si no esta vacio el usuario y contraseña
     }
+
+    const mostrarPassword = () => { //funcion para mostrar/ocultar la contraseña
+      setPasswordShown(!passwordShown);
+    }
+
     //#endregion
 
     //#region llamadas a la API
@@ -95,13 +101,21 @@ const IngresoRegistro = () => {
                <Form.Control required  ref={refInputUsuario} type="text" placeholder="Usuario" />
              </Form.Group>
 
-             <Form.Group className="mb-3" controlId="formBasicPassword">
-               <Form.Control required  ref={refInputContrasenia} type="password" placeholder="Contraseña" />
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+               <Form.Control required  ref={refInputContrasenia} type={ passwordShown ? "text" : "password" } placeholder="Contraseña" />
              </Form.Group>
-        
+      
              <input  onClick={handlerIngreso}   className='rounded me-2 mt-3' type='submit' value='Ingresar' />
              <input  onClick={handlerRegistro}  className='rounded ms-2 mt-3' type='submit' value='Registrarse' />
            </Form>
+
+           {/* <div>
+             <button id='btnMostrarPassword' onClick={mostrarPassword}></button>
+           </div> */}
+
+           <Button onClick={ mostrarPassword } id='btnMostrarPassword' >
+                Mostrar
+           </Button>
 
             {/* Segun el estado de la bandera, es que se muestra o no un mensaje con respecto al login/registro */}
             {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 

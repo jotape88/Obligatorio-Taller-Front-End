@@ -157,7 +157,7 @@ const Dashboard = () => {
                       <Container className="justify-content-center">
                           <Nav>
                               <NavLink className='navLinks mx-3 menu' to="/">Inicio</NavLink>
-                              <NavLink className='navLinks mx-3 menu' to="/formEnvios/">Agregar Envio</NavLink>
+                              <NavLink className='navLinks mx-3 menu' to="/formEnvios/">Agregar Envio y calcular distancia</NavLink>
                               <NavLink className='navLinks mx-3 menu' to="/listEnvios/">Listar envíos</NavLink>
                               <NavLink className='navLinks mx-3 menu' to="/topEnvios/">Top 5 Departamentos</NavLink>
                               <NavLink className='navLinks mx-3 menu' to="/grafEnvXCiud/">Envíos por ciudad</NavLink>
