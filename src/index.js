@@ -22,7 +22,7 @@ const store = createStore(
 ReactDOM.render(
 
   <React.StrictMode>
-    <Header />
+    
     <Provider store={store}>
     
       <App />

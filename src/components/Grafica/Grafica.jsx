@@ -2,7 +2,6 @@ import React from "react";
 import Chart from "react-apexcharts";
 
 const Grafica = ({ datos, categorias, nombreSeries = "" }) => {
-    console.log(`datos,categorias`, datos, categorias);
     const state = {
       options: {
         chart: {
@@ -21,7 +20,9 @@ const Grafica = ({ datos, categorias, nombreSeries = "" }) => {
     };
   
     return (
-      <Chart
+     
+        {/* alineamos la chart con bootstrap, dandole display flex */},
+      <Chart className="d-flex justify-content-center" 
         options={state.options}
         series={state.series}
         type="bar"

@@ -259,7 +259,7 @@ const FormularioEnvio = () => {
           </Form>
                         
           {/* Mensajes de error y confirmacion, se muestran u ocultan dependiendo del estado de la bandera del useState */}
-          {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 
+          {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="info">{mensajes}</Alert></div>} 
 
       </section>
 

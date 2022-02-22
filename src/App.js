@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import NotFound from './components/Contenido/NotFoundPage';
 import Home from './components/Contenido/Home';
 import ListaTopDptos from './components/ListaTopDptos/ListaTopDptos';
+import Header from './components/Header/Header';
 
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
@@ -19,9 +20,10 @@ import GraficoEnvXCateg from './components/GraficoEnvXCateg/GraficoEnvXCateg';
 const App = () => {
 
     return (
-      <Container>      
-        <Row className='text-center'>        
-          <Col>          
+      <Container fluid>          
+        <Row className='text-center'>             
+          <Col>   
+          <Header/>         
             <BrowserRouter>         
               <Routes>             
                   <Route path="*" element={ <NotFound/> } /> {/* Error de 404, por defecto se muestra cuando un usuario logueado escribe una url inexistente */}

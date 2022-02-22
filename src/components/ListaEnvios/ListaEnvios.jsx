@@ -73,7 +73,7 @@ const ListaEnvios = () => {
                     <td>$ {e.precio}</td>
                     <td><Button onClick={(en) => handlerEliminarEnviopXId(en, e.id) } variant="danger">Eliminar</Button></td> {/* Le pasamos al handler el event y el id del envio, el cual se encarga de llamar a la api para borrar */}
                   </tr>
-              ))};
+              ))}
                 </tbody>
               </Table>       
 

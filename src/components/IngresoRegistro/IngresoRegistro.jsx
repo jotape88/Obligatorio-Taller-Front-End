@@ -90,7 +90,7 @@ const IngresoRegistro = () => {
     //#region [Renderizado]
     return (
         <section id="sectionFormularioRegistro" className='row justify-content-center'>
-           <Form className='col-10 col-md-6 col-lg-4 col-xl-4 mt-5'>
+           <Form className='col-10 col-sm-8 col-md-7 col-lg-4 col-xl-3 mt-5'>
 
              <Form.Group className="mb-3" controlId="formBasicEmail">
                <Form.Control required  ref={refInputUsuario} type="text" placeholder="Usuario" />
