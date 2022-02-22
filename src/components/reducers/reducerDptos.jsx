@@ -1,4 +1,4 @@
-const estadoInicial = '';
+const estadoInicial = [];
 
 const reducerDptos = (state = estadoInicial, action) => {
     switch (action.type) {

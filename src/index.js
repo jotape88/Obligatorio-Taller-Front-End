@@ -7,7 +7,6 @@ import './styles/estilos.css';
 
 import reportWebVitals from './reportWebVitals';
 import App from './App';
-import Footer from './components/Footer/Footer';
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";

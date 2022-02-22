@@ -4,19 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 const ListaEnvios = () => {
     //#region Variables y Hooks
     const usuarioLogueado = JSON.parse(sessionStorage.getItem('usuario'));
-    const dispatch = useDispatch();
     const reduceEnvios = useSelector((state) => state.reducerEnvios);
     const reduceCiudades = useSelector((state) => state.reducerCiudades);
+    const dispatch = useDispatch();
 
     //#region Metodos
     const obtenerNombreDeCiudadXId = (idCiudad) => {
-      const nombreCiudad = reduceCiudades.find(ciudad => ciudad.id == idCiudad);
-      return nombreCiudad.nombre;
+      const nombreCiudad = reduceCiudades.find(ciudad => ciudad.id == idCiudad); //Se busca la ciudad en el array de ciudades del reduce
+      return nombreCiudad.nombre; //Se devuelve el nombre de la ciudad
     }
     //#endregion
 
     //#region llamadas a la API
-    const eliminarEnvio = async (idEnvio) => { 
+    const eliminarEnvioAPI = async (idEnvio) => { 
       const myHeaders = new Headers();
       myHeaders.append("apikey", usuarioLogueado.apiKey);
       myHeaders.append("Content-Type", "application/json");
@@ -43,11 +43,10 @@ const ListaEnvios = () => {
     //#endregion
 
     //#region handlers
-    const handlerEliminarEnviopXId = async (e, id) => {
-      e.preventDefault();
-      await eliminarEnvio(id);
-      dispatch({ type: 'EliminarEnvio', payload: id });
-      // setBanderaLlamadasAPI(true);
+    const handlerEliminarEnviopXId = async (e, id) => { //Function para eliminar el envio, que recibe los parametros del boton input que se le muestra al usuario
+      e.preventDefault(); 
+      await eliminarEnvioAPI(id); //Llamada a la API para eliminar el envio, hacemos el await para que espere a que se resuelva la promesa
+      dispatch({ type: 'EliminarEnvio', payload: id }); //Hacemos el dispatch y llamamos al reducer para eliminar el envio
     }
     //#endregion
 
@@ -68,12 +67,12 @@ const ListaEnvios = () => {
                 </thead>
                 <tbody>
               {reduceEnvios.map((e) => (
-                  <tr key={e.id}>
-                    <td>{obtenerNombreDeCiudadXId(e.ciudad_origen)}</td>
-                    <td>{obtenerNombreDeCiudadXId(e.ciudad_destino)}</td>
+                  <tr key={e.id}> {/* la key en este caso es el id del envio */}
+                    <td>{obtenerNombreDeCiudadXId(e.ciudad_origen)}</td> {/* Le pasamos el codigo de ciudad, y se obtiene el nombre de la ciudad origen del envio */}
+                    <td>{obtenerNombreDeCiudadXId(e.ciudad_destino)}</td> {/* Le pasamos el codigo de ciudad, y se obtiene el nombre de la ciudad destino del envio */}
                     <td>{e.distancia} Kms</td>
                     <td>$ {e.precio}</td>
-                    <td><Button onClick={(en) => handlerEliminarEnviopXId(en, e.id) } variant="danger">Eliminar</Button></td>
+                    <td><Button onClick={(en) => handlerEliminarEnviopXId(en, e.id) } variant="danger">Eliminar</Button></td> {/* Le pasamos al handler el event y el id del envio, el cual se encarga de llamar a la api para borrar */}
                   </tr>
               ))}
                 </tbody>

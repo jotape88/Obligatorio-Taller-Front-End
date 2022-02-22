@@ -42,7 +42,7 @@ const ListaTopDptos = () => {
                     }
                 }
             });
-            topDpto.sort((a, b) => b.cantidad - a.cantidad);
+            topDpto.sort((a, b) => b.cantidad - a.cantidad); //Ordenamos el array de mayor a menor
         });
         return topDpto;
     }

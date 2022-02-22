@@ -24,10 +24,10 @@ const App = () => {
           <Col>          
             <BrowserRouter>         
               <Routes>             
-                  <Route path="*" element={ <NotFound/> } />
-                  <Route path="/login" element={ <IngresoRegistro/> } />
+                  <Route path="*" element={ <NotFound/> } /> {/* Error de 404, por defecto se muestra cuando un usuario logueado escribe una url inexistente */}
+                  <Route path="/login" element={ <IngresoRegistro/> } /> 
                   <Route path="/" element={ <Dashboard /> }>
-                      <Route index element={ <Home />} /> 
+                      <Route index element={ <Home />} /> {/* La ruta por defecto cuando iniciamos la aplicacion va a ser el componente <Home> */}
                       <Route path="formEnvios" element={ <FormularioEnvio/> } />
                       <Route path="listEnvios" element={ <ListaEnvios/> } />
                       <Route path="topEnvios" element={ <ListaTopDptos/> } />

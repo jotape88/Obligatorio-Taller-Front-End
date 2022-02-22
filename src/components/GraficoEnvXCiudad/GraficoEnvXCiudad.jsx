@@ -7,36 +7,39 @@ const GraficoEnvXCiudad = () => {
   const reduceEnvios = useSelector((state) => state.reducerEnvios);
   const reduceCiudades = useSelector((state) => state.reducerCiudades);
 
-  const datos = [];
-
   const obtenerOrdenados = () => {
-    const mapaEnvios = new Map();
-    reduceEnvios.forEach((t) => {
-      let idEnv = t.id;
-      if (!mapaEnvios.has(idEnv)) {
-        mapaEnvios.set(idEnv, 0);
-      }
-      if (t.completed) {
-        let cantidad = mapaEnvios.get(idEnv);
-        ++cantidad;
-        mapaEnvios.set(idEnv, cantidad);
-      }
-    });
 
+      const mapaEnvios = new Map(); // Mapa de envios
 
-    let datos = Array.from(mapaEnvios.values());
-    let envios = Array.from(mapaEnvios.keys());
-    console.log(`datos,categorias`, datos, envios);
-    return { envios, datos };
+      reduceEnvios.forEach(e => {
+          const ciudadDesIdEnvio = e.ciudad_destino; // Obtenemos la id de la categoria del envio
+          const nombreCiudadDestino = reduceCiudades.find(c => c.id == ciudadDesIdEnvio).nombre; // Obtenemos el nombre de la categoria
+          if (!mapaEnvios.has(nombreCiudadDestino)) { // Si no existe la categoria en el mapa
+              mapaEnvios.set(nombreCiudadDestino, 0); // Creamos una entrada en el mapa y le asignamos el valor 0
+          }
+
+          let cantidad = mapaEnvios.get(nombreCiudadDestino); // Obtenemos la cantidad de envios de la categoria
+          ++cantidad; // Incrementamos la cantidad
+          mapaEnvios.set(nombreCiudadDestino, cantidad);  // Actualizamos la cantidad
+          
+      });
+
+      const mapDesc = new Map(
+              [...mapaEnvios.entries()].sort((a, b) => b[1] - a[1]) // Ordenamos el mapa de mayor a menor
+      );
+
+    const datos = Array.from(mapDesc.values()); // Obtenemos los valores del mapa
+    const categorias = Array.from(mapDesc.keys()); // Obtenemos las categorias del mapa
+    return { categorias, datos };
   };
 
   const data = obtenerOrdenados();
 
   return (
-    <>
-      {"ENTO"}
-      <Grafica {...data}></Grafica>
-    </>
+    <div>
+        <p className="titulosGraficas">{"Envios por ciudades"}</p>
+        <Grafica {...data}></Grafica>
+    </div>
   );
 };
 

@@ -6,56 +6,39 @@ const GraficoEnvXCateg = () => {
     const reduceEnvios = useSelector((state) => state.reducerEnvios);
     const reduceCategorias = useSelector((state) => state.reducerCategs);
   
-    let idCategoriasEnvios = [];
-    let nombresCategorias = [];
-  
     const obtenerOrdenados = () => {
 
-        const mapaEnvios = new Map();
+        const mapaEnvios = new Map(); // Mapa de envios
 
         reduceEnvios.forEach(e => {
-            let categoria = e.id_categoria;
-            idCategoriasEnvios.push(categoria);    
-        });
-
-        //buscar un id de reducecategoria que este en idCategoriasEnvios
-        reduceCategorias.forEach(c => {
-            let id = c.id;
-            if(idCategoriasEnvios.includes(id)){
-                nombresCategorias.push(c.nombre);
+            const categoriaIdEnvio = e.id_categoria; // Obtenemos la id de la categoria del envio
+            const nombreCategoria = reduceCategorias.find(c => c.id == categoriaIdEnvio).nombre; // Obtenemos el nombre de la categoria
+            if (!mapaEnvios.has(nombreCategoria)) { // Si no existe la categoria en el mapa
+                mapaEnvios.set(nombreCategoria, 0); // Creamos una entrada en el mapa y le asignamos el valor 0
             }
+
+            let cantidad = mapaEnvios.get(nombreCategoria); // Obtenemos la cantidad de envios de la categoria
+            ++cantidad; // Incrementamos la cantidad
+            mapaEnvios.set(nombreCategoria, cantidad);  // Actualizamos la cantidad
+            
         });
 
-        // reduceCategorias.map(c => {
-        //     if (c.id.has(idCategoriasEnvios)) {
-        //         nombresCategorias.push(c.nombre);
-        //     }
-        // });
+        const mapDesc = new Map(
+                [...mapaEnvios.entries()].sort((a, b) => b[1] - a[1]) // Ordenamos el mapa de mayor a menor
+        );
 
-        //Sumamos los envios de cada categoria
-        let cantidad = mapaEnvios.get(idCategoriasEnvios);
-        ++cantidad;
-        mapaEnvios.set(idCategoriasEnvios, cantidad);
-
-        //Guardamos los envios de cada categoria en un mapa
-        if (!mapaEnvios.has(nombresCategorias)) {
-          mapaEnvios.set(idCategoriasEnvios, 0);
-        }
-
-      //Ordenamos el mapa por cantidad de envios
-      let datos = Array.from(mapaEnvios.values());
-      let categorias = Array.from(mapaEnvios.keys());
-      console.log(`datos, categorias`, datos, categorias);
+      const datos = Array.from(mapDesc.values()); // Obtenemos los valores del mapa
+      const categorias = Array.from(mapDesc.keys()); // Obtenemos las categorias del mapa
       return { categorias, datos };
     };
   
     const data = obtenerOrdenados();
   
     return (
-      <>
-        {"ENTO"}
-        <Grafica {...data}></Grafica>
-      </>
+      <div>
+        <p className="titulosGraficas">{"Envios por categorias"}</p>
+            <Grafica {...data}></Grafica>
+      </div>
     );
 };
 

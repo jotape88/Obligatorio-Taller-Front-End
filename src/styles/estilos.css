@@ -12,6 +12,7 @@ html{
     box-shadow: 2px 2px 12px rgb(119, 119, 119);
 }
 
+/* General */
 section {
     margin-bottom: 100px;
 }
@@ -36,7 +37,6 @@ input[type="password"], input[type="text"]{
     transition: all 0.4s;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
-
 
 input[type="password"]:hover, input[type="text"]:hover { 
     background-color: rgba(10, 7, 211, 0.096);
@@ -78,6 +78,7 @@ input[type="submit"], #btnAgregarEnvio {   /*Boton de agregar envio*/
     text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
 }
 
+
 /* ANCLA VOLVER */
 #anclaVolver {
     position: fixed; right: 25px; bottom: 45px;
@@ -95,7 +96,7 @@ footer{
     border-top: 1px solid rgba(180, 179, 179, 0.308);
 }
 
-/* NOMBRE DE USER */
+/* NOMBRE DEL USER Y GASTO TOTAL ARRIBA A LA DERECHA*/
 #user-info{
     position: relative;
     text-align: end;
@@ -118,7 +119,7 @@ footer{
     font-size: 1.4rem;
 }
 
-/* DESLOGUEO */
+/* Boton de deslogueo */
 #log-out{
     position: relative;
     text-align: center;
@@ -140,6 +141,7 @@ footer{
     color:black;
 }
 
+/* Animacion de cargando mientras se efectuan las llamadas a la API */
 #cargando{
     color:#02215a;
     font-size: 2.5rem;
@@ -163,6 +165,7 @@ footer{
     text-shadow: 2px 2px 5px rgb(128, 124, 124);
 }
 
+/* Imagen del home */
 .imagenHome {
     position: relative;
     top: -3rem;
@@ -174,12 +177,13 @@ footer{
     box-shadow: 5px 4px 10px rgba(12, 1, 1, 0.3);
 }
 
-.loginTxt{
+/* Texto con link para volver, para la imagen de error 404 no se encontra la pagina */
+.loginText{
     color:rgba(15, 12, 187, 0.671);
     transition: 0.6s all;
     text-decoration: none;
 }
-.loginTxt:hover{
+.loginText:hover{
     color:rgba(7, 4, 173, 0.945);
 }
 
@@ -223,7 +227,20 @@ footer{
     text-shadow: 1px 1px 12px rgb(37, 37, 37);
 }
 
+/* Dashboard */
 #sectionDashboard{
     position: relative;
     top: -11rem;
+}
+
+/* GRAFICAS */
+.titulosGraficas{
+    font-size: 40px;
+    font-weight: 800;
+}
+
+.apexcharts-svg{
+    position: relative;
+    left: 25rem;
+    margin-top: 35px;
 }

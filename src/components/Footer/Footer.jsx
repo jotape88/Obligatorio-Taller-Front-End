@@ -4,7 +4,7 @@ const Footer = () => {
     return  <footer className='row footer text-start'>
                 <a href="#miHeader">
                         <figure id="anclaVolver">
-                            <img alt="flechaVovler" title="Flecha para volver al inicio" src={Imagen}></img>
+                            <img alt="flechaVovler" title="Flecha para volver al inicio" src={Imagen}></img> {/* Flecha para volver hacia arriba */}
 
                         </figure>
                 </a>

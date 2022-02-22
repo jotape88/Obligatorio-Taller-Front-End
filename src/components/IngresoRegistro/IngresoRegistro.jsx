@@ -14,14 +14,14 @@ const IngresoRegistro = () => {
     //#endregion
 
     //#region validaciones
-    const validarDatos = (nom, pass) =>{
+    const validarDatos = (nom, pass) =>{ //validamos datos ingresados desde el input desde el login
         let bandera = false;
-        return bandera = true ? nom != '' && pass != '' : bandera;     
+        return bandera = true ? nom != '' && pass != '' : bandera; //si no esta vacio el usuario y contraseña entonces bandera es true
     }
     //#endregion
 
     //#region llamadas a la API
-    const llamadaAPIParaLogin = (usuario, laContrasenia, tipoLlamado) => {
+    const llamadaAPIParaLoginORegistro = (usuario, laContrasenia, tipoLlamado) => {
         const laUrl = `https://envios.develotion.com/${tipoLlamado}`;  
         const objeto = {
             usuario: usuario,
@@ -46,37 +46,37 @@ const IngresoRegistro = () => {
     //#endregion
 
     //#region handlers
-    const handlerIngreso = async (e) => { 
-      e.preventDefault(); 
+    const handlerIngreso = async (e) => { //handler encargado del login del usuario
+      e.preventDefault(); //evitamos que se recargue la pagina
       const elUsuario = refInputUsuario.current.value;
       const laContrasenia = refInputContrasenia.current.value;
       if (validarDatos(elUsuario, laContrasenia)){
-          const res = await llamadaAPIParaLogin(elUsuario, laContrasenia, 'login.php');
-           if (res.codigo === 200){
-              const persona = {
-                  idUsuario: res.id,
-                  nombre: elUsuario,
+          const res = await llamadaAPIParaLoginORegistro(elUsuario, laContrasenia, 'login.php'); //llamamos a la API para pasarle los datos ingresados por el usuario
+           if (res.codigo === 200){ //si el codigo es 200 entonces el usuario y contraseña son correctos
+              const persona = { //creamos un objeto persona
+                  idUsuario: res.id, 
+                  nombre: elUsuario, //el nombre del usuario es el mismo que el usuario ingresado
                   apiKey: res.apiKey
               } 
               sessionStorage.setItem('usuario', JSON.stringify(persona)); //Guardamos el usuario en el localStorage en version JSON stringify
               dispatch({ type: 'Ingreso', payload: persona }); //Guardamos el usuario en el store
               navigate('/'); //Si todo esta ok, redirigimos al dashboard
            } else{
-              setMensajes(res.mensaje); //Si no, mostramos el mensaje de error
+              setMensajes(res.mensaje); //Si no, mostramos el mensaje de error correspondiente
            }       
       } else {
           setMensajes('Debe ingresar un usuario y una contraseña.');
       }
     }
 
-    const handlerRegistro = async (e) => {
+    const handlerRegistro = async (e) => { //handler encargado del registro del usuario
         e.preventDefault();
         const elUsuario = refInputUsuario.current.value;
         const laContrasenia = refInputContrasenia.current.value;
         if (validarDatos(elUsuario, laContrasenia)){
-            const res = await llamadaAPIParaLogin(elUsuario, laContrasenia, 'usuarios.php');     
+            const res = await llamadaAPIParaLoginORegistro(elUsuario, laContrasenia, 'usuarios.php'); //usamos el string 'usuario.php' para indicarle a la API que estamos haciendo un registro
             if (res.codigo === 200){
-                setMensajes(`El usuario "${elUsuario}" fue registrado correctamente con la id: "${res.id}"`);
+                setMensajes(`El usuario "${elUsuario}" fue registrado correctamente con la id: "${res.id}"`); //Si todo esta ok, mostramos el mensaje de registro con el usuario e id generada
              } else{
                 setMensajes(res.mensaje);
              }
@@ -106,6 +106,7 @@ const IngresoRegistro = () => {
 
            </Form>
 
+            {/* Segun el estado de la bandera, es que se muestra o no un mensaje con respecto al login/registro */}
             {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 
         </section>
   )

@@ -18,7 +18,7 @@ const Dashboard = () => {
   const cargarAlDispatch = async () => {
     try{
       let c = await obtenerCategoriasAPI();
-      let categorias = c.categorias;
+      let categorias = c.categorias; //Nos quedamos con el array de las categorias y descartamos el mensaje que nos devuelve la API (ej, 200)
 
       let d = await cargarDptosAPI();
       let departamentos = d.departamentos;
@@ -48,13 +48,13 @@ const Dashboard = () => {
       datosCargados();
     }
     catch (error) {
-      alert("Hubo un error en la carga de datos");
+      alert("Hubo un error en la carga de datos"); //Si hay algun error en las llamadas a las API cuando se carga la app por primera vez, se va a mostrar este mensaje
     }
   }, []);
 
   const handleLogOut = () => {
-    sessionStorage.clear(); 
-    navigate('/login');
+    sessionStorage.clear();  //Borramos el sessionStorage con los datos del usuario logueado
+    navigate('/login'); //Navegamos a la pagina de login
   }
 
   //#endregion
@@ -69,7 +69,7 @@ const Dashboard = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    return await fetch("https://envios.develotion.com/departamentos.php", requestOptions)
+    return await fetch(`https://envios.develotion.com/departamentos.php`, requestOptions)
                 .then((response) => {
                   return new Promise((resolve, reject) => {
                     if (response.status == 200) {
@@ -90,7 +90,7 @@ const Dashboard = () => {
       headers: myHeaders,
       redirect: 'follow'
     };
-    return await fetch("https://envios.develotion.com/categorias.php", requestOptions)
+    return await fetch(`https://envios.develotion.com/categorias.php`, requestOptions)
                  .then((response) => {
                    return new Promise((resolve, reject) => {
                      if (response.status == 200) {
@@ -149,10 +149,10 @@ const Dashboard = () => {
   //#endregion
 
   //#region Renderizado
-  if(usuarioLogeado == null){
+  if(usuarioLogeado == null){ //Si no hay usuario logueado, navegamos a la pagina de login
     return <Navigate replace to={"/login"} />
-  } else {
-        if(banderaLlamadasAPI === true){
+  } else { //Si hay usuario logueado, renderizamos la pagina
+        if(banderaLlamadasAPI === true){ //Si ya se cargaron las llamadas a las APIs (es decir, si ya se cargaron los datos en el dispatch) mostramos todo el menu del dashboard
           return (
                   <div id="sectionDashboard" className='row justify-content-center me-auto'>
                     <Navbar>
@@ -175,10 +175,10 @@ const Dashboard = () => {
                     <Button onClick={ handleLogOut } id='log-out' >
                       Logout
                     </Button>
-                    <Outlet className='me-auto'></Outlet>
+                    <Outlet className='me-auto'></Outlet> {/* para poder mostrar a los hijos */}
                   </div>
           );
-        }else {  
+        }else {   //Mientras no se carguen las llamadas a las APIs, mostramos un gif de cargando
           return (
             <div id="cargando"><p>Cargando...</p> <img src={ImagenCarga} alt="imagen de carga" /></div> 
           )

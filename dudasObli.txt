@@ -1,5 +1,0 @@
-DUDAS:
-
--esta bien no tener un componente calculadora?
--keys repetidas cuando listamos los envios
--404 renderiza todo de nuevo

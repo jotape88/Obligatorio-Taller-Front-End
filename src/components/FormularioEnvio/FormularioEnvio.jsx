@@ -11,13 +11,13 @@ const FormularioEnvio = () => {
     const categorias = useSelector((state) => state.reducerCategs);
     const ciudades = useSelector((state) => state.reducerCiudades);
 
-    const [ciudadesOrigen, setCiudadesOrigen] = useState([]);
-    const [ciudadesDestino, setCiudadesDestino] = useState([]);
+    const [ciudadesOrigen, setCiudadesOrigen] = useState([]); //Array de objetos con las ciudades de origen
+    const [ciudadesDestino, setCiudadesDestino] = useState([]); //Array de objetos con las ciudades de destino
 
-    const [banderaCiudadesOrigen, setBanderaCiudadesOrigen] = useState();
-    const [banderaCiudadesDestino, setBanderaCiudadesDestino] = useState();
+    const [banderaCiudadesOrigen, setBanderaCiudadesOrigen] = useState(); //Bandera para saber si ya se eligieron los departamenos, si es asi, esto se setea y se muestran las ciudades
+    const [banderaCiudadesDestino, setBanderaCiudadesDestino] = useState(); 
 
-    const [mensajes, setMensajes] = useState('');
+    const [mensajes, setMensajes] = useState(''); //Mensajes de error
     const ciudadOrigenRef = useRef(null);
     const ciudadDestinoRef = useRef(null);
     const catPaqueteRef = useRef(null);
@@ -48,8 +48,8 @@ const FormularioEnvio = () => {
 
     const traerCiudadXIdDesdeReduce = (idCiudad) => {
         let ciudad = null;
-        if(ciudades.find(c => c.id === parseInt(idCiudad))) {
-            return ciudades.find(c => c.id === parseInt(idCiudad));
+        if(ciudades.find(c => c.id === parseInt(idCiudad))) { //Buscamos por id de ciudad y si existe retornamos el objeto
+            return ciudades.find(c => c.id === parseInt(idCiudad)); 
         }
         return ciudad;
     }
@@ -76,12 +76,12 @@ const FormularioEnvio = () => {
     //#endregion
     
 
-    //hacer un metodo para obtener la ciudad mediante el departamento
-    const obtenerCiudadesXDpto = (idDpto) => {
+    //Metodo para obtener la ciudad mediante el departamento
+    const obtenerCiudadesXDpto = (idDpto) => { //Recibe el id del departamento
         if(idDpto === '') {
             return null;
         } else {
-            return ciudades.filter(c => c.id_departamento == idDpto);
+            return ciudades.filter(c => c.id_departamento == idDpto); // Si matchea el id del departamento de la ciudad con el que recibimos retornamos un array con las ciudades de dicho departamento
         }
     }
 
@@ -98,20 +98,18 @@ const FormularioEnvio = () => {
             return;
         }
 
-        const ciudadOrigenObjeto = traerCiudadXIdDesdeReduce(ciudadOrigenRef.current.value); //A traves del id de la ciudad que obtenemos del useRef, se obtiene el objeto completo
+        const ciudadOrigenObjeto = traerCiudadXIdDesdeReduce(ciudadOrigenRef.current.value); //A traves del id de la ciudad que obtenemos del useRef (donde el usuario ingresa los datos), se obtiene el objeto completo
         const ciudadDestinoObjeto = traerCiudadXIdDesdeReduce(ciudadDestinoRef.current.value);
 
-        
-
-        const latOrigen =  ciudadOrigenObjeto.latitud;
-        const lonOrigen = ciudadOrigenObjeto.longitud;
-        const latDestino = ciudadDestinoObjeto.latitud;
+        const latOrigen =  ciudadOrigenObjeto.latitud; //Obtenemos las coordenadas de la ciudad de origen 
+        const lonOrigen = ciudadOrigenObjeto.longitud; 
+        const latDestino = ciudadDestinoObjeto.latitud; //Obtenemos las coordenadas de la ciudad de destino 
         const lonDestino = ciudadDestinoObjeto.longitud;
 
         const distanciaEnKms = calcularDistanciaEntreCiudades(latOrigen, lonOrigen, latDestino, lonDestino);
         const precioTotal = calcularPrecioEnvio(pesoPaqueteRef.current.value, distanciaEnKms);
 
-        const objeto = {
+        const objeto = { //Objeto que se enviara a la API para hacer el post
             idUsuario: usuarioLogueado.idUsuario,
             idCiudadOrigen: ciudadOrigenRef.current.value,
             idCiudadDestino: ciudadDestinoRef.current.value,
@@ -131,39 +129,40 @@ const FormularioEnvio = () => {
               body: cuerpoPost,
               redirect: 'follow'
         };
-        const laUrl = `https://envios.develotion.com/envios.php?idUsuario=${usuarioLogueado.idUsuario}`;
+        const laUrl = `https://envios.develotion.com/envios.php?idUsuario=${usuarioLogueado.idUsuario}`; //le pasamos el id de usuario que lo obtenemos del sessionStorge para que el envio quede para dicho usuario
         fetch(`${laUrl}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 if (result.codigo !== 200) { 
-                    setMensajes(`Error: ${result.mensaje}`);
+                    setMensajes(`Error: ${result.mensaje}`); //Si el codigo es distinto de 200, es porque hubo un error, lo mostramos en el mensaje
                 } else {
                     setMensajes(`Envío del usuario: "${usuarioLogueado.nombre}" agendado con éxito, 
                                  Monto total: $${precioTotal}, 
                                  Identificador de envío: ${result.idEnvio}`);
 
-                    let objetoAlStore = { //Objeto conteniendo el envio que se guardara en el store
-                        id: result.idEnvio, //usamos la id que nos revuelve la respuesta de la api
+                    let objetoAlStore = { //Objeto conteniendo el envio que se guardara en el store de envios
+                        id: result.idEnvio, //usamos la id que nos devuelve la respuesta de la api
                         ciudad_origen: ciudadOrigenObjeto.id,
                         ciudad_destino: ciudadDestinoObjeto.id,
-                        peso: parseInt(pesoPaqueteRef.current.value),
-                        distancia: parseInt(distanciaEnKms),
+                        peso: parseInt(pesoPaqueteRef.current.value), 
+                        distancia: parseInt(distanciaEnKms), 
                         precio: precioTotal,
-                        categoria: catPaqueteRef.current.value,
+                        id_categoria: catPaqueteRef.current.value,
+                        id_usuario: usuarioLogueado.idUsuario,
                     }
-                    dispatch( {type: 'AgregarEnvio', payload: objetoAlStore} );
+                    dispatch( {type: 'AgregarEnvio', payload: objetoAlStore} ); //Agregamos el envio al store
                 }
             });
     }
 
-    const handleChangeSelectOrigen = async (e) => {
-        setBanderaCiudadesOrigen(false);
-        const idDptoOrigen = e.target.value;
-        const respuestaCiudOrig = obtenerCiudadesXDpto(idDptoOrigen);
-        setCiudadesOrigen(respuestaCiudOrig);
-        setBanderaCiudadesOrigen(true);
+    const handleChangeSelectOrigen = async (e) => { //Handler para el select de departamentos
+        setBanderaCiudadesOrigen(false); //Por defecto la bandera es falsa
+        const idDptoOrigen = e.target.value; //Obtenemos el id del departamento desde el select
+        const respuestaCiudOrig = obtenerCiudadesXDpto(idDptoOrigen);  //Obtenemos las ciudades del departamento
+        setCiudadesOrigen(respuestaCiudOrig); //Seteamos las ciudades de origen mediante el useState
+        setBanderaCiudadesOrigen(true); //Cambiamos la bandera para que se muestre el select de ciudades correspondiente a dicho departamento
     }
-    const handleChangeSelectDestino = async (e) => {
+    const handleChangeSelectDestino = async (e) => { 
         setBanderaCiudadesDestino(false);
         const idDptoDestino = e.target.value;
         const respuestaCiudDest = obtenerCiudadesXDpto(idDptoDestino);
@@ -171,22 +170,22 @@ const FormularioEnvio = () => {
         setBanderaCiudadesDestino(true);
     }
     
-    const calculadora = (e) => {
+    const calculadora = (e) => { //Handler para el boton de calcular
         e.preventDefault();
 
-        if(!validarCiudadesVacias()) {
+        if(!validarCiudadesVacias()) { //Validamos que las ciudades no esten vacias
             setMensajes('Debe seleccionar ambas ciudades');
             return;
         }
 
-        const ciudadOrigen = traerCiudadXIdDesdeReduce(ciudadOrigenRef.current.value); 
-        const ciudadDestino = traerCiudadXIdDesdeReduce(ciudadDestinoRef.current.value);
+        const ciudadOrigen = traerCiudadXIdDesdeReduce(ciudadOrigenRef.current.value);  //Obtenemos el objeto completo de la ciudad de origen
+        const ciudadDestino = traerCiudadXIdDesdeReduce(ciudadDestinoRef.current.value); //Obtenemos el objeto completo de la ciudad de destino
 
         const latOrigen =  ciudadOrigen.latitud;
         const lonOrigen = ciudadOrigen.longitud;
         const latDestino = ciudadDestino.latitud;
         const lonDestino = ciudadDestino.longitud;
-        const dis = calcularDistanciaEntreCiudades(latOrigen, lonOrigen, latDestino, lonDestino)
+        const dis = calcularDistanciaEntreCiudades(latOrigen, lonOrigen, latDestino, lonDestino); //Calculamos la distancia entre las ciudades con el mismo metodo que agregar un envio
         setMensajes(`La distancia entre ambas ciudades es: ${dis} Kms`);
     }
     //#endregion
@@ -196,8 +195,9 @@ const FormularioEnvio = () => {
       <section className='row justify-content-center'>
           <h2>Agregar un envío</h2>
           <Form className='col-10 col-md-6 col-lg-4 mt-4'>
-              <Form.Group >
-                      {/* Select de departamentos */}
+              <Form.Group >             
+                  {/* El defaultValue en todos los Form.Select es para que por defecto siempre se seleccione el primer option (el que no esta en el map) con el titulo o mensaje */}
+                  {/* Select de departamentos de ORIGEN */}
                   <Form.Select onChange={handleChangeSelectOrigen} className="select mb-2" defaultValue="">
                       <option value="" disabled={true}>Departamento de origen</option>   
                       {departamentos.map((dptoO) => (
@@ -205,7 +205,7 @@ const FormularioEnvio = () => {
                       ))} 
                   </Form.Select>
 
-                      {/* Ciudades de acuerdo al dpto elegido */}
+                      {/* Ciudades de ORIGEN de acuerdo al dpto elegido, se muestra solo cuando la bandera este en true */}
                       { banderaCiudadesOrigen ?                
                       <Form.Select ref={ciudadOrigenRef} className="select mb-4 w-50 mb-5" defaultValue="" >
                           <option value="" disabled={true}>Ciudad de origen</option>
@@ -216,7 +216,7 @@ const FormularioEnvio = () => {
                       : ""}
 
 
-                      {/* Select de departamentos */}
+                      {/* Select de departamentos DE DESTINO */}
                   <Form.Select onChange={handleChangeSelectDestino} className="select mb-2" defaultValue="" >
                       <option  value="" disabled={true}>Departamento de destino</option>   
                       {departamentos.map((dptoO) => (
@@ -224,7 +224,7 @@ const FormularioEnvio = () => {
                       ))} 
                   </Form.Select>
 
-                      {/* Ciudades de acuerdo al dpto elegido */}
+                      {/* Ciudades de DESTINO de acuerdo al dpto elegido, se muestra solo cuando la bandera este en true */}
                       { banderaCiudadesDestino ?                
                       <Form.Select ref={ciudadDestinoRef} className="select mb-4 w-50 mb-5" defaultValue="" >
                           <option value="" disabled={true}>Ciudad de destino</option>   
@@ -242,7 +242,7 @@ const FormularioEnvio = () => {
                       ))}      
                   </Form.Select>
 
-                  {/* Input de peso del paquete */}
+                  {/* Input de peso del paquete, no admite fraccionados, solo numeros enteros */}
                   <Form.Control ref={pesoPaqueteRef}  className="input" type="number" min="0" placeholder="Peso del paquete (en Kg.)" />       
               </Form.Group>
 
@@ -250,12 +250,13 @@ const FormularioEnvio = () => {
               <Button onClick={ handlerEnvio } className='rounded mt-4 py-1' id="btnAgregarEnvio" type="submit">
                   Agregar envío
               </Button>
+               {/* Botones para la calculadora de distancias */}
               <Button onClick={ calculadora } variant="info" className='rounded mt-4 py-1 px-1' id="btnCalcularDistancia" type="submit">
                   Calcular distancia
               </Button>
           </Form>
                         
-          {/* Mensajes de error y confirmacion */}
+          {/* Mensajes de error y confirmacion, se muestran u ocultan dependiendo del estado de la bandera del useState */}
           {mensajes && <div className="row justify-content-center"><Alert className='col-4 mt-5 rounded justify-content-center' variant="warning">{mensajes}</Alert></div>} 
 
       </section>

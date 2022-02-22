@@ -10,7 +10,7 @@ const NotFoundPage = () => {
             <figure className='imagenHome mt-5'>
                 <img className='img-fluid' src={Imagen} alt="imagen de una cadena de una warehouse con trabajadores" title='Foto de un warehouse'/>
             </figure>      
-            <h3 className='mb-3'>Volver <NavLink className='loginText' to="/">dashboard</NavLink></h3>
+            <h3 className='mb-3'>Volver a <NavLink className='loginText' to="/">Dashboard/Login</NavLink></h3>
         </section>
   )
 }
