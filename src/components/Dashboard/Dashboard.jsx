@@ -6,8 +6,6 @@ import GastoTotal from '../GastoTotal/GastoTotal';
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom';
 
-
-
 const Dashboard = () => {
   //#region Variables
   const usuarioLogeado = JSON.parse(sessionStorage.getItem('usuario'));
