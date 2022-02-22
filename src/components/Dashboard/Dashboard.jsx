@@ -158,12 +158,12 @@ const Dashboard = () => {
                     <Navbar>
                       <Container className="justify-content-center">
                           <Nav>
-                              <NavLink className='navLinks mx-3' to="/">Inicio</NavLink>
-                              <NavLink className='navLinks mx-3' to="/formEnvios/">Agregar Envio</NavLink>
-                              <NavLink className='navLinks mx-3' to="/listEnvios/">Listar envíos</NavLink>
-                              <NavLink className='navLinks mx-3' to="/topEnvios/">Top 5 Departamentos</NavLink>
-                              <NavLink className='navLinks mx-3' to="/grafEnvXCiud/">Envíos por ciudad</NavLink>
-                              <NavLink className='navLinks mx-3' to="/grafEnvXCateg/">Envíos por categoría</NavLink>
+                              <NavLink className='navLinks mx-3 menu' to="/">Inicio</NavLink>
+                              <NavLink className='navLinks mx-3 menu' to="/formEnvios/">Agregar Envio</NavLink>
+                              <NavLink className='navLinks mx-3 menu' to="/listEnvios/">Listar envíos</NavLink>
+                              <NavLink className='navLinks mx-3 menu' to="/topEnvios/">Top 5 Departamentos</NavLink>
+                              <NavLink className='navLinks mx-3 menu' to="/grafEnvXCiud/">Envíos por ciudad</NavLink>
+                              <NavLink className='navLinks mx-3 menu' to="/grafEnvXCateg/">Envíos por categoría</NavLink>
                           </Nav>
                       </Container>
                     </Navbar>
@@ -173,7 +173,7 @@ const Dashboard = () => {
                     </div>
                     <GastoTotal></GastoTotal>
                     <Button onClick={ handleLogOut } id='log-out' >
-                      Logout
+                      Salir
                     </Button>
                     <Outlet className='me-auto'></Outlet> {/* para poder mostrar a los hijos */}
                   </div>

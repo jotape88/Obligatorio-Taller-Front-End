@@ -85,7 +85,7 @@ const FormularioEnvio = () => {
         }
     }
 
-    //#region Handlers
+    //#region Handlers y llamadas a la API
     const handlerEnvio = async (e) => {
         e.preventDefault();
 
@@ -169,8 +169,10 @@ const FormularioEnvio = () => {
         setCiudadesDestino(respuestaCiudDest);
         setBanderaCiudadesDestino(true);
     }
-    
-    const calculadora = (e) => { //Handler para el boton de calcular
+    //#endregion
+
+    //#region Funcion de calculadora de distancia
+    const calculadora = (e) => {
         e.preventDefault();
 
         if(!validarCiudadesVacias()) { //Validamos que las ciudades no esten vacias
@@ -185,7 +187,7 @@ const FormularioEnvio = () => {
         const lonOrigen = ciudadOrigen.longitud;
         const latDestino = ciudadDestino.latitud;
         const lonDestino = ciudadDestino.longitud;
-        const dis = calcularDistanciaEntreCiudades(latOrigen, lonOrigen, latDestino, lonDestino); //Calculamos la distancia entre las ciudades con el mismo metodo que agregar un envio
+        const dis = calcularDistanciaEntreCiudades(latOrigen, lonOrigen, latDestino, lonDestino); //Calculamos la distancia entre las ciudades con el mismo metodo que usamo para agregar un envio
         setMensajes(`La distancia entre ambas ciudades es: ${dis} Kms`);
     }
     //#endregion

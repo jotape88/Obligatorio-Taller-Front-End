@@ -36,7 +36,7 @@ const GraficoEnvXCateg = () => {
   
     return (
       <div>
-        <p className="titulosGraficas">{"Envios por categorias"}</p>
+        <p className="titulosGraficas">{"Envíos por categorías"}</p>
             <Grafica {...data}></Grafica>
       </div>
     );

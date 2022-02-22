@@ -8,7 +8,7 @@ const Footer = () => {
 
                         </figure>
                 </a>
-                <p className='pt-1 ps-5'>2022 - Juan Pablo Gil - Taller Front End</p>
+                <p className='pt-1 ps-5'>2022 - Juan Pablo Gil - Taller Front End / Universidad ORT</p>
             </footer>
             
 }

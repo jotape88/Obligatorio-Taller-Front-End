@@ -10,8 +10,7 @@ const ListaEnvios = () => {
 
     //#region Metodos
     const obtenerNombreDeCiudadXId = (idCiudad) => {
-      const nombreCiudad = reduceCiudades.find(ciudad => ciudad.id == idCiudad); //Se busca la ciudad en el array de ciudades del reduce
-      return nombreCiudad.nombre; //Se devuelve el nombre de la ciudad
+      return reduceCiudades.find(ciudad => ciudad.id == idCiudad).nombre; //Se busca la ciudad en el array de ciudades del reduce y se devuelve el nombre de la ciudad
     }
     //#endregion
 
@@ -55,7 +54,7 @@ const ListaEnvios = () => {
         <section className='row justify-content-center'>
 
           <h2 className='col-6 mt-5'>Lista de envíos</h2>
-              <Table className='col-6 striped bordered hover mt-3 w-75'>
+              <Table className='col-6 table table-hover mt-3 w-75'>
                 <thead>
                   <tr>
                     <th>Ciudad origen</th>
@@ -74,7 +73,7 @@ const ListaEnvios = () => {
                     <td>$ {e.precio}</td>
                     <td><Button onClick={(en) => handlerEliminarEnviopXId(en, e.id) } variant="danger">Eliminar</Button></td> {/* Le pasamos al handler el event y el id del envio, el cual se encarga de llamar a la api para borrar */}
                   </tr>
-              ))}
+              ))};
                 </tbody>
               </Table>       
 

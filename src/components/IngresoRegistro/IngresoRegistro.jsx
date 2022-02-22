@@ -14,15 +14,14 @@ const IngresoRegistro = () => {
     //#endregion
 
     //#region validaciones
-    const validarDatos = (nom, pass) =>{ //validamos datos ingresados desde el input desde el login
-        let bandera = false;
-        return bandera = true ? nom != '' && pass != '' : bandera; //si no esta vacio el usuario y contraseña entonces bandera es true
+    const validarDatos = (nom, pass) =>{ //validamos datos ingresados desde por el usuario desde el input del login/registro
+        return true ? nom != '' && pass != '' : false; // Operador ternario para verificar si no esta vacio el usuario y contraseña
     }
     //#endregion
 
     //#region llamadas a la API
-    const llamadaAPIParaLoginORegistro = (usuario, laContrasenia, tipoLlamado) => {
-        const laUrl = `https://envios.develotion.com/${tipoLlamado}`;  
+    const llamadaAPIParaLoginORegistro = async (usuario, laContrasenia, tipoLlamado) => { //tipoLlamado es un string que indica si es login o registro
+        const laUrl = `https://envios.develotion.com/${tipoLlamado}`;  //La URL de la API + el tipo de llamado (que corresponde a la url de la API para registro o login)
         const objeto = {
             usuario: usuario,
             password: laContrasenia
@@ -36,7 +35,7 @@ const IngresoRegistro = () => {
             body: cuerpoPost,
             redirect: 'follow'
         };      
-        return fetch(`${laUrl}`, requestOptions)
+        return await fetch(`${laUrl}`, requestOptions)
                .then((response) => response.json())
                .then((result) => result)
                .catch((error) => {console.log(error);

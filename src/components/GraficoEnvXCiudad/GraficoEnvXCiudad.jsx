@@ -37,7 +37,7 @@ const GraficoEnvXCiudad = () => {
 
   return (
     <div>
-        <p className="titulosGraficas">{"Envios por ciudades"}</p>
+        <p className="titulosGraficas">{"Envíos por ciudades"}</p>
         <Grafica {...data}></Grafica>
     </div>
   );

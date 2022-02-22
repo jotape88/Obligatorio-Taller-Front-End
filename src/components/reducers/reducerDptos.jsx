@@ -7,7 +7,6 @@ const reducerDptos = (state = estadoInicial, action) => {
         default:
             return state;
     }
-
 };
 
 export default reducerDptos;
