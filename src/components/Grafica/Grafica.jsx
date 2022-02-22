@@ -20,8 +20,7 @@ const Grafica = ({ datos, categorias, nombreSeries = "" }) => {
     };
   
     return (
-     
-        {/* alineamos la chart con bootstrap, dandole display flex */},
+      {/* alineamos la chart con bootstrap, dandole display flex */},
       <Chart className="d-flex justify-content-center" 
         options={state.options}
         series={state.series}

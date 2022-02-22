@@ -12,7 +12,6 @@ import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import logger from "redux-logger";
 import  reducer from './components/reducers/reducer';
-import Header from './components/Header/Header';
 
 const store = createStore(
     reducer, 

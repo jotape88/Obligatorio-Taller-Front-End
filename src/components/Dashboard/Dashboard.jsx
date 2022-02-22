@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from "react-redux";
-import ImagenCarga from '../../img/loading.gif'
-import GastoTotal from '../GastoTotal/GastoTotal';
-
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import ImagenCarga from '../../img/loading.gif'
+import GastoTotal from '../GastoTotal/GastoTotal';
 
 const Dashboard = () => {
   //#region Variables
@@ -35,7 +34,7 @@ const Dashboard = () => {
       dispatch( {type: 'CargarCiudades', payload: ciudades} );
     }
     catch(error){
-      console.log(`Advertencia: `, error); //Cuando cargue por primera vez la app, esta advertencia siempre va a aparecer, ya que no hay datos en el sessionStorage
+      console.log(`Advertencia: `, error); 
     }
   }
   
@@ -56,7 +55,6 @@ const Dashboard = () => {
     sessionStorage.clear();  //Borramos el sessionStorage con los datos del usuario logueado
     navigate('/login'); //Navegamos a la pagina de login
   }
-
   //#endregion
 
   //#region Llamadas a la API

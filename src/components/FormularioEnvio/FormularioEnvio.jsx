@@ -24,8 +24,6 @@ const FormularioEnvio = () => {
     const pesoPaqueteRef = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-
     //#endregion
    
     //#region Metodos
@@ -37,13 +35,11 @@ const FormularioEnvio = () => {
         return distancia >= 100 ? precioBase + (peso * precioXKilo) + recargoPorDistancia  : precioBase + (peso * precioXKilo); 
     }
 
-
     const calcularDistanciaEntreCiudades = (latOrigen, lonOrigen, latDestino, lonDestino) => {
         const distancia = getDistance(
             { latitude: latOrigen, longitude: lonOrigen },
             { latitude: latDestino, longitude: lonDestino });
         return  (distancia / 1000).toFixed(2); //Guardamos la distancia solo hasta dos decimales
-
     }
 
     const traerCiudadXIdDesdeReduce = (idCiudad) => {
@@ -244,15 +240,15 @@ const FormularioEnvio = () => {
                       ))}      
                   </Form.Select>
 
-                  {/* Input de peso del paquete, no admite fraccionados, solo numeros enteros */}
+                  {/* Input de peso del paquete, no admite fraccionados solo numeros enteros */}
                   <Form.Control ref={pesoPaqueteRef}  className="input" type="number" min="0" placeholder="Peso del paquete (en Kg.)" />       
               </Form.Group>
 
-              {/* Botones de envio */}
+              {/* Boton de agregar nuevo envio */}
               <Button onClick={ handlerEnvio } className='rounded mt-4 py-1' id="btnAgregarEnvio" type="submit">
                   Agregar envío
               </Button>
-               {/* Botones para la calculadora de distancias */}
+               {/* Boton para la calculadora de distancias entre ciudades */}
               <Button onClick={ calculadora } variant="info" className='rounded mt-4 py-1 px-1' id="btnCalcularDistancia" type="submit">
                   Calcular distancia
               </Button>

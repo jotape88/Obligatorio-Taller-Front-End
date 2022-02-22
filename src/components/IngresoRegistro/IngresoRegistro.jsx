@@ -91,7 +91,6 @@ const IngresoRegistro = () => {
     return (
         <section id="sectionFormularioRegistro" className='row justify-content-center'>
            <Form className='col-10 col-sm-8 col-md-7 col-lg-4 col-xl-3 mt-5'>
-
              <Form.Group className="mb-3" controlId="formBasicEmail">
                <Form.Control required  ref={refInputUsuario} type="text" placeholder="Usuario" />
              </Form.Group>
@@ -102,7 +101,6 @@ const IngresoRegistro = () => {
         
              <input  onClick={handlerIngreso}   className='rounded me-2 mt-3' type='submit' value='Ingresar' />
              <input  onClick={handlerRegistro}  className='rounded ms-2 mt-3' type='submit' value='Registrarse' />
-
            </Form>
 
             {/* Segun el estado de la bandera, es que se muestra o no un mensaje con respecto al login/registro */}

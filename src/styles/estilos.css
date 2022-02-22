@@ -231,7 +231,7 @@ footer{
     box-shadow: 4px 4px 10px rgb(42, 42, 43);
     border-bottom: 3px solid rgb(8, 71, 143); 
     /* Añadimos difuminado */
-    transition: all 0.4s;
+    transition: all 0.8s;
     filter: blur(0.5px);
     position: relative;
     top: 3rem;

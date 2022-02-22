@@ -51,7 +51,7 @@ const ListaTopDptos = () => {
     return (    
         <section className='row justify-content-center'>
           <h2 className='col-6 mt-5'>Top 5 Departamentos con mas envíos</h2>
-              <Table className='col-6 table table-hover mt-3 w-75'>
+              <Table className='col-10 table table-hover mt-3' style={{"font-size" : "18px", "width" : "1000px"}}>
                 <thead>
                   <tr>
                     <th>Posición</th>
