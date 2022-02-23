@@ -26,7 +26,7 @@ const App = () => {
           <Header/>         
             <BrowserRouter>         
               <Routes>             
-                  <Route path="*" element={ <NotFound/> } /> {/* Error de 404, por defecto se muestra cuando un usuario logueado escribe una url inexistente */}
+                  <Route path="*" element={ <NotFound/> } /> {/* Error de 404 para cuando no se encuentra la url digitada */}
                   <Route path="/login" element={ <IngresoRegistro/> } /> 
                   <Route path="/" element={ <Dashboard /> }>
                       <Route index element={ <Home />} /> {/* La ruta por defecto cuando iniciamos la aplicacion va a ser el componente <Home> */}

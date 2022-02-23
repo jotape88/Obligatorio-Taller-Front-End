@@ -109,10 +109,6 @@ const IngresoRegistro = () => {
              <input  onClick={handlerRegistro}  className='rounded ms-2 mt-3' type='submit' value='Registrarse' />
            </Form>
 
-           {/* <div>
-             <button id='btnMostrarPassword' onClick={mostrarPassword}></button>
-           </div> */}
-
            <Button onClick={ mostrarPassword } id='btnMostrarPassword' >
                 Mostrar
            </Button>
